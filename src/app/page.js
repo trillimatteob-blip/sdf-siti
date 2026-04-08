@@ -63,3 +63,12 @@ export default function Home() {
     </div>
   );
 }
+export default function Home() {
+  return (
+    <div>
+      <h1>Il mio sito</h1>
+      <p>Questa variabile è pubblica: {process.env.NEXT_PUBLIC_NOME_SITO}</p>
+    </div>
+  )
+}
+
