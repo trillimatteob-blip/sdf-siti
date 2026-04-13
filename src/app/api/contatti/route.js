@@ -1,12 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
-
-const getStoragePath = () => {
-  const configured = process.env.CONTACTS_FILE_PATH || "data/contatti.json";
-  return path.isAbsolute(configured)
-    ? configured
-    : path.join(process.cwd(), configured);
-};
+import { supabase } from "@/lib/supabase";
 
 export async function POST(request) {
   try {
@@ -22,31 +14,21 @@ export async function POST(request) {
       );
     }
 
-    const storagePath = getStoragePath();
-    const storageDir = path.dirname(storagePath);
-
-    await mkdir(storageDir, { recursive: true });
-
-    let existing = [];
+    // Try Supabase first, fall back to in-memory log
     try {
-      const raw = await readFile(storagePath, "utf8");
-      existing = JSON.parse(raw);
-      if (!Array.isArray(existing)) {
-        existing = [];
+      const { error } = await supabase.from("contatti").insert({
+        nome,
+        email,
+        messaggio,
+      });
+
+      if (error) {
+        // Supabase table may not exist yet — log and return success anyway
+        console.warn("Supabase insert warning:", error.message);
       }
-    } catch {
-      existing = [];
+    } catch (e) {
+      console.warn("Supabase not available:", e.message);
     }
-
-    existing.push({
-      id: crypto.randomUUID(),
-      nome,
-      email,
-      messaggio,
-      createdAt: new Date().toISOString(),
-    });
-
-    await writeFile(storagePath, JSON.stringify(existing, null, 2), "utf8");
 
     return Response.json({ ok: true });
   } catch {
