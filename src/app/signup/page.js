@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +21,9 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      const { error: authError } = await supabase.auth.signUp({
+      if (!supabase) throw new Error("Servizio non disponibile. Riprova più tardi.");
+
+      const { data, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -29,6 +33,13 @@ export default function SignupPage() {
 
       if (authError) throw authError;
 
+      // If email confirmation is disabled, user is logged in immediately
+      if (data.session) {
+        router.push("/dashboard");
+        return;
+      }
+
+      // Otherwise show confirmation message
       setSuccess(true);
     } catch (err) {
       setError(err.message || "Errore durante la registrazione. Riprova.");
