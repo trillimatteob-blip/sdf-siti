@@ -1,6 +1,5 @@
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
-import PricingCard from "@/components/PricingCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import StatsCounter from "@/components/StatsCounter";
@@ -8,27 +7,47 @@ import StatsCounter from "@/components/StatsCounter";
 const WHATSAPP_URL =
   "https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching";
 
-const coaching6Features = [
-  "Scheda di allenamento personalizzata",
-  "Piano alimentare su misura",
-  "Check-in settimanali via foto/video",
-  "Supporto diretto WhatsApp",
-  "Analisi posing inclusa",
-];
-
-const coaching12Features = [
-  "Tutto del percorso semestrale",
-  "Accesso prioritario ad Andrea",
-  "Prep competitiva se richiesta",
-  "Sessione posing inclusa",
-  "Video analisi mensile del fisico",
-];
+const WHATSAPP_POSING =
+  "https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20prenotare%20una%20sessione%20di%20posing";
 
 const stats = [
   { value: "2", prefix: "", suffix: "\u00d7", label: "Mr. Olympia", sublabel: "Il palco pi\u00f9 grande del bodybuilding mondiale" },
   { value: "23", suffix: " anni", label: "Primo titolo Pro", sublabel: "Il pi\u00f9 giovane Classic Physique Pro d\u2019Italia" },
   { value: "335", suffix: "K", label: "Follower Instagram", sublabel: "Una delle community di bodybuilding pi\u00f9 grandi d\u2019Italia" },
   { value: "100", suffix: "+", label: "Atleti seguiti", sublabel: "Centinaia di trasformazioni reali e risultati dimostrabili" },
+];
+
+const coachingFeatures = [
+  {
+    icon: "\u{1F4CB}",
+    title: "Piano Personalizzato",
+    desc: "Allenamento, nutrizione e integrazione costruiti intorno ai tuoi obiettivi.",
+  },
+  {
+    icon: "\u{1F4CA}",
+    title: "Check-in Settimanali",
+    desc: "Ogni settimana analizziamo i tuoi progressi e aggiustiamo il piano.",
+  },
+  {
+    icon: "\u{1F4AC}",
+    title: "Supporto WhatsApp",
+    desc: "Accesso diretto a me via WhatsApp per domande e motivazione quotidiana.",
+  },
+  {
+    icon: "\u{1F3C6}",
+    title: "Posing Coaching",
+    desc: "Sessioni di posing incluse per chi si prepara a competizioni.",
+  },
+  {
+    icon: "\u{1F465}",
+    title: "Community Esclusiva",
+    desc: "Entra nella community di atleti che condividono il tuo percorso.",
+  },
+  {
+    icon: "\u{1F4C8}",
+    title: "Tracking Progressi",
+    desc: "Monitoraggio costante con foto, misure e parametri di trasformazione.",
+  },
 ];
 
 const testimonials = [
@@ -39,8 +58,8 @@ const testimonials = [
   },
   {
     name: "Luca F.",
-    text: "In 12 mesi ho trasformato completamente il mio physique e la mia mentalit\u00e0. Andrea non ti d\u00e0 solo la scheda \u2014 ti insegna a pensare come un atleta.",
-    role: "Coaching 12 Mesi",
+    text: "Ho trasformato completamente il mio physique e la mia mentalit\u00e0. Andrea non ti d\u00e0 solo la scheda \u2014 ti insegna a pensare come un atleta.",
+    role: "Coaching Personalizzato",
   },
   {
     name: "Davide M.",
@@ -66,14 +85,9 @@ const faqItems = [
       "S\u00ec. Le sessioni in presenza si organizzano in base alla disponibilit\u00e0 di Andrea. Scrivi su WhatsApp e troviamo insieme la data e la location pi\u00f9 adatta a te.",
   },
   {
-    question: "Qual \u00e8 la differenza tra coaching 6 e 12 mesi?",
-    answer:
-      "Il percorso 12 mesi garantisce una trasformazione completa con accesso prioritario ad Andrea, prep competitiva inclusa e video analisi mensile. Il percorso 6 mesi \u00e8 ideale per chi ha gi\u00e0 una base e vuole accelerare verso un obiettivo specifico.",
-  },
-  {
     question: "Il coaching include la preparazione gara?",
     answer:
-      "S\u00ec, nel percorso 12 mesi. Include scheda peak week, dieta pre-gara, posing dedicato e supporto diretto di Andrea negli ultimi giorni prima del palco.",
+      "S\u00ec, la preparazione gara pu\u00f2 essere inclusa nel percorso di coaching. Include scheda peak week, dieta pre-gara, posing dedicato e supporto diretto di Andrea negli ultimi giorni prima del palco. Contattami su WhatsApp per discuterne.",
   },
 ];
 
@@ -159,25 +173,28 @@ export default function HomePage() {
             Programmi costruiti su di te. Non schede generiche. Non metodi copiati. Il tuo corpo, il tuo ritmo, il tuo palco.
           </p>
 
-          <div className="mt-16 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <PricingCard
-              title="Percorso Semestrale"
-              subtitle="6 mesi di coaching personalizzato"
-              features={coaching6Features}
-              ctaText="INIZIA ORA"
-              ctaLink={WHATSAPP_URL}
-              external
-            />
-            <PricingCard
-              title="Percorso Annuale"
-              subtitle="12 mesi di trasformazione completa"
-              features={coaching12Features}
-              ctaText="INIZIA ORA"
-              ctaLink={WHATSAPP_URL}
-              featured
-              external
-            />
+          <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {coachingFeatures.map((f) => (
+              <div key={f.title} className="card p-8 text-center">
+                <div className="text-3xl mb-4">{f.icon}</div>
+                <h3 className="font-heading text-xl tracking-wider text-white-warm">
+                  {f.title}
+                </h3>
+                <p className="mt-3 text-gray-muted text-sm leading-relaxed">
+                  {f.desc}
+                </p>
+              </div>
+            ))}
           </div>
+
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gold mt-12 inline-block text-lg px-10 py-4"
+          >
+            CONTATTAMI PER INFO
+          </a>
         </div>
       </section>
 
@@ -207,30 +224,38 @@ export default function HomePage() {
             <div className="card p-8 text-center">
               <div className="text-gold text-4xl mb-4">&#9654;</div>
               <h3 className="font-heading text-xl tracking-wider text-white-warm">
-                Video Lezioni On-Demand
+                Sessione Online 1-to-1
               </h3>
-              <p className="mt-3 text-gray-muted text-sm">
-                Accedi alle lezioni quando vuoi. Pose fondamentali, transizioni e routine complete per Classic Physique e Men&apos;s Physique.
+              <div className="mt-4 mb-4">
+                <span className="font-heading text-4xl text-gold-gradient">87</span>
+                <span className="text-gray-muted text-lg ml-1">EUR / sessione</span>
+              </div>
+              <p className="text-gray-muted text-sm">
+                Correzione posing via videochiamata con Andrea. Analisi dettagliata e consigli personalizzati in tempo reale.
               </p>
               <a
-                href={WHATSAPP_URL}
+                href={WHATSAPP_POSING}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-ghost mt-6 inline-block text-sm"
               >
-                INFO SU WHATSAPP
+                PRENOTA ORA
               </a>
             </div>
             <div className="card p-8 text-center">
               <div className="text-gold text-4xl mb-4">&#9733;</div>
               <h3 className="font-heading text-xl tracking-wider text-white-warm">
-                Sessioni dal Vivo 1-to-1
+                Sessione dal Vivo 1-to-1
               </h3>
-              <p className="mt-3 text-gray-muted text-sm">
-                Sessioni in presenza con Andrea. Correzioni in tempo reale, analisi dettagliata e preparazione palco dedicata.
+              <div className="mt-4 mb-4">
+                <span className="font-heading text-4xl text-gold-gradient">87</span>
+                <span className="text-gray-muted text-lg ml-1">EUR / sessione</span>
+              </div>
+              <p className="text-gray-muted text-sm">
+                Correzione in presenza con Andrea. Sessioni dal vivo con feedback immediato e preparazione palco dedicata.
               </p>
               <a
-                href={WHATSAPP_URL}
+                href={WHATSAPP_POSING}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gold mt-6 inline-block text-sm"

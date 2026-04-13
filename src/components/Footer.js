@@ -129,26 +129,36 @@ export default function Footer() {
 
         {/* Sponsors */}
         <div className="mt-14 pt-10 border-t border-gold/10">
-          <h4 className="font-heading text-lg tracking-wider text-white-warm text-center mb-8">
+          <h4 className="font-heading text-lg tracking-wider text-white-warm text-center mb-2">
             PARTNER &amp; SPONSOR
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-muted text-center mb-10">
+            I brand che supportano il mio percorso
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {/* Tsunami Nutrition */}
             <a
               href="https://www.tsunaminutrition.it/"
               target="_blank"
               rel="noopener noreferrer"
-              className="card p-6 flex flex-col items-center gap-4 hover:border-gold/30 transition-colors group"
+              className="group relative rounded-2xl border border-gold/10 bg-gradient-to-b from-gold/5 to-transparent p-8 flex flex-col items-center gap-5 hover:border-gold/40 hover:from-gold/10 transition-all duration-300"
             >
-              <img
-                src="/tsunami-logo.jpg"
-                alt="Tsunami Nutrition"
-                className="h-12 w-auto object-contain brightness-90 group-hover:brightness-100 transition"
-              />
-              <div className="text-center">
-                <p className="text-sm text-white-warm font-medium">Tsunami Nutrition</p>
-                <p className="text-xs text-gold mt-1">
-                  Codice sconto: <span className="font-heading tracking-wider">ANDREA15</span>
+              <div className="h-16 flex items-center justify-center">
+                <img
+                  src="/tsunami-logo.jpg"
+                  alt="Tsunami Nutrition"
+                  className="h-14 w-auto object-contain brightness-90 group-hover:brightness-110 transition duration-300"
+                />
+              </div>
+              <p className="text-base text-white-warm font-medium tracking-wide">
+                Tsunami Nutrition
+              </p>
+              <div className="w-full rounded-xl bg-gold/10 border border-gold/20 px-4 py-3 text-center">
+                <p className="text-xs text-gray-muted uppercase tracking-widest mb-1">
+                  Codice sconto
+                </p>
+                <p className="font-heading text-xl tracking-[0.2em] text-gold">
+                  ANDREA15
                 </p>
               </div>
             </a>
@@ -158,17 +168,24 @@ export default function Footer() {
               href="https://insanestone.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="card p-6 flex flex-col items-center gap-4 hover:border-gold/30 transition-colors group"
+              className="group relative rounded-2xl border border-gold/10 bg-gradient-to-b from-gold/5 to-transparent p-8 flex flex-col items-center gap-5 hover:border-gold/40 hover:from-gold/10 transition-all duration-300"
             >
-              <img
-                src="/insanestone-logo.png"
-                alt="Insane Stone"
-                className="h-12 w-auto object-contain brightness-90 group-hover:brightness-100 transition"
-              />
-              <div className="text-center">
-                <p className="text-sm text-white-warm font-medium">Insane Stone</p>
-                <p className="text-xs text-gold mt-1">
-                  Codice sconto: <span className="font-heading tracking-wider">ANDREA10</span>
+              <div className="h-16 flex items-center justify-center">
+                <img
+                  src="/insanestone-logo.png"
+                  alt="Insane Stone"
+                  className="h-14 w-auto object-contain brightness-90 group-hover:brightness-110 transition duration-300"
+                />
+              </div>
+              <p className="text-base text-white-warm font-medium tracking-wide">
+                Insane Stone
+              </p>
+              <div className="w-full rounded-xl bg-gold/10 border border-gold/20 px-4 py-3 text-center">
+                <p className="text-xs text-gray-muted uppercase tracking-widest mb-1">
+                  Codice sconto
+                </p>
+                <p className="font-heading text-xl tracking-[0.2em] text-gold">
+                  ANDREA10
                 </p>
               </div>
             </a>

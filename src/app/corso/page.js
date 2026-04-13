@@ -47,8 +47,8 @@ const courseFaq = [
     a: "Si, il corso include la possibilita di inviare video per ricevere feedback personalizzato direttamente da Andrea.",
   },
   {
-    q: "Posso pagare a rate?",
-    a: "Al momento il pagamento e in un'unica soluzione. Stiamo lavorando per offrire opzioni di pagamento rateale.",
+    q: "Come funzionano i 3 livelli?",
+    a: "Il corso e disponibile in 3 livelli: Base (fondamentali), Pro (avanzato con routine individuale) ed Elite (accesso completo con feedback video personalizzato). Puoi acquistare il livello che preferisci dalla tua area personale.",
   },
   {
     q: "C'e una garanzia di rimborso?",
@@ -59,7 +59,7 @@ const courseFaq = [
 export default function CorsoPage() {
   return (
     <>
-      {/* ─── HERO ─── */}
+      {/* --- HERO --- */}
       <section className="relative pt-40 pb-24 px-6 text-center">
         <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent pointer-events-none" />
         <div className="relative mx-auto max-w-4xl">
@@ -73,10 +73,16 @@ export default function CorsoPage() {
             palco dell'Olympia alla tua preparazione. Lezioni professionali
             on-demand con accesso illimitato.
           </p>
+          <p className="mt-4 text-gold font-heading text-lg tracking-wider">
+            Disponibile in 3 livelli. Acquista dalla tua area personale.
+          </p>
+          <Link href="/dashboard" className="btn-gold mt-8 inline-block">
+            ACCEDI ALL&apos;AREA RISERVATA
+          </Link>
         </div>
       </section>
 
-      {/* ─── WHAT'S INCLUDED ─── */}
+      {/* --- WHAT'S INCLUDED --- */}
       <section className="py-20 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-5xl">
           <h2 className="section-title text-center">
@@ -85,17 +91,17 @@ export default function CorsoPage() {
           <div className="mt-12 grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: "▶",
+                icon: "\u25B6",
                 title: "6 Moduli Video",
                 desc: "Oltre 4 ore di contenuto professionale registrato in alta qualita.",
               },
               {
-                icon: "★",
+                icon: "\u2605",
                 title: "Feedback Personalizzato",
                 desc: "Invia i tuoi video e ricevi correzioni dettagliate da Andrea.",
               },
               {
-                icon: "∞",
+                icon: "\u221E",
                 title: "Accesso Illimitato",
                 desc: "Rivedi le lezioni quando vuoi, per sempre. Aggiornamenti inclusi.",
               },
@@ -112,7 +118,7 @@ export default function CorsoPage() {
         </div>
       </section>
 
-      {/* ─── MODULES ─── */}
+      {/* --- MODULES --- */}
       <section className="py-24 px-6">
         <div className="mx-auto max-w-3xl">
           <h2 className="section-title text-center">
@@ -139,30 +145,26 @@ export default function CorsoPage() {
         </div>
       </section>
 
-      {/* ─── PRICING ─── */}
+      {/* --- CTA AREA RISERVATA --- */}
       <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-xl text-center">
-          <span className="section-label">PREZZO</span>
+          <span className="section-label">ACQUISTA</span>
           <h2 className="section-title mt-2">
             INVESTI NEL TUO <span className="text-gold-gradient">PALCO</span>
           </h2>
 
           <div className="card-featured p-10 mt-12">
             <p className="text-gray-muted text-sm tracking-wider uppercase">
-              Pagamento unico
+              Video Corso Posing Professionale
             </p>
-            <div className="mt-4 flex items-baseline justify-center gap-1">
-              <span className="font-heading text-6xl text-gold">497</span>
-              <span className="text-gray-muted text-xl">EUR</span>
-            </div>
+            <p className="mt-4 text-white-warm text-lg leading-relaxed">
+              Acquista il video corso dalla tua area personale. Disponibile in 3 livelli.
+            </p>
             <ul className="mt-8 space-y-3 text-left">
               {[
-                "6 moduli video professionali",
-                "Oltre 4 ore di contenuto",
-                "Feedback personalizzato",
-                "Accesso illimitato",
-                "Aggiornamenti futuri inclusi",
-                "Community esclusiva",
+                "BASE — Fondamentali e pose base",
+                "PRO — Routine individuale e stage presence",
+                "ELITE — Accesso completo + feedback video personalizzato",
               ].map((f) => (
                 <li key={f} className="flex items-center gap-3 text-white-warm">
                   <span className="h-2 w-2 rounded-full bg-gold flex-shrink-0" />
@@ -170,21 +172,20 @@ export default function CorsoPage() {
                 </li>
               ))}
             </ul>
-            {/* TODO: Replace with Stripe checkout link */}
             <Link
-              href="/checkout/success"
+              href="/dashboard"
               className="btn-gold w-full mt-10 inline-block text-center"
             >
-              ACQUISTA ORA
+              ACCEDI ALL&apos;AREA RISERVATA
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── MONEY-BACK GUARANTEE ─── */}
+      {/* --- MONEY-BACK GUARANTEE --- */}
       <section className="py-20 px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="text-gold text-6xl mb-6">✦</div>
+          <div className="text-gold text-6xl mb-6">&#10022;</div>
           <h2 className="font-heading text-3xl tracking-wider text-white-warm">
             GARANZIA 30 GIORNI
           </h2>
@@ -196,7 +197,7 @@ export default function CorsoPage() {
         </div>
       </section>
 
-      {/* ─── FAQ ─── */}
+      {/* --- FAQ --- */}
       <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-3xl">
           <div className="text-center mb-12">
@@ -226,7 +227,7 @@ export default function CorsoPage() {
         </div>
       </section>
 
-      {/* ─── FINAL CTA ─── */}
+      {/* --- FINAL CTA --- */}
       <section className="py-24 px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-4xl md:text-5xl tracking-wider text-white-warm">
@@ -236,9 +237,8 @@ export default function CorsoPage() {
           <p className="mt-4 text-gray-muted">
             Inizia oggi il tuo percorso verso un posing professionale.
           </p>
-          {/* TODO: Replace with Stripe checkout link */}
-          <Link href="/checkout/success" className="btn-gold mt-8 inline-block">
-            ACQUISTA ORA — 497 EUR
+          <Link href="/dashboard" className="btn-gold mt-8 inline-block">
+            ACCEDI ALL&apos;AREA RISERVATA
           </Link>
         </div>
       </section>

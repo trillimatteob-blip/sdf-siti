@@ -1,48 +1,39 @@
 import Link from "next/link";
-import PricingCard from "@/components/PricingCard";
 
 const WHATSAPP_URL =
-  "https://wa.me/393516157497?text=Ciao%20Andrea!%20Vorrei%20info%20sul%20coaching";
+  "https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching";
 
 const features = [
   {
-    icon: "📋",
+    icon: "\u{1F4CB}",
     title: "Piano Personalizzato",
     desc: "Allenamento, nutrizione e integrazione costruiti intorno ai tuoi obiettivi e al tuo stile di vita.",
   },
   {
-    icon: "📊",
+    icon: "\u{1F4CA}",
     title: "Check-in Settimanali",
     desc: "Ogni settimana analizziamo i tuoi progressi e aggiustiamo il piano per risultati ottimali.",
   },
   {
-    icon: "💬",
+    icon: "\u{1F4AC}",
     title: "Supporto WhatsApp",
     desc: "Accesso diretto a me via WhatsApp per domande, dubbi e motivazione quotidiana.",
   },
   {
-    icon: "🏆",
+    icon: "\u{1F3C6}",
     title: "Posing Coaching",
     desc: "Sessioni di posing incluse per chi si prepara a competizioni o vuole migliorare la propria estetica.",
   },
   {
-    icon: "👥",
+    icon: "\u{1F465}",
     title: "Community Esclusiva",
     desc: "Entra nella community di atleti che condividono il tuo stesso percorso e obiettivi.",
   },
   {
-    icon: "📈",
+    icon: "\u{1F4C8}",
     title: "Tracking Progressi",
     desc: "Monitoraggio costante con foto, misure e parametri per vedere la tua trasformazione.",
   },
-];
-
-const coachingFeatures = [
-  "Piano personalizzato",
-  "Check-in settimanali",
-  "Supporto WhatsApp",
-  "Posing coaching",
-  "Accesso community",
 ];
 
 const steps = [
@@ -71,7 +62,7 @@ const steps = [
 export default function CoachingPage() {
   return (
     <>
-      {/* ─── HERO ─── */}
+      {/* --- HERO --- */}
       <section className="relative pt-40 pb-24 px-6 text-center">
         <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent pointer-events-none" />
         <div className="relative mx-auto max-w-4xl">
@@ -96,7 +87,7 @@ export default function CoachingPage() {
         </div>
       </section>
 
-      {/* ─── WHAT'S INCLUDED ─── */}
+      {/* --- WHAT'S INCLUDED --- */}
       <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
@@ -121,39 +112,8 @@ export default function CoachingPage() {
         </div>
       </section>
 
-      {/* ─── PRICING ─── */}
+      {/* --- PROCESS --- */}
       <section className="py-24 px-6">
-        <div className="mx-auto max-w-7xl text-center">
-          <span className="section-label">PIANI</span>
-          <h2 className="section-title mt-2">
-            SCEGLI IL TUO <span className="text-gold-gradient">PERCORSO</span>
-          </h2>
-          <div className="mt-16 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <PricingCard
-              title="6 MESI"
-              price="299"
-              period="/mese"
-              features={coachingFeatures}
-              cta="INIZIA ORA"
-              ctaLink={WHATSAPP_URL}
-              external
-            />
-            <PricingCard
-              title="12 MESI"
-              price="249"
-              period="/mese"
-              features={coachingFeatures}
-              cta="INIZIA ORA"
-              ctaLink={WHATSAPP_URL}
-              featured
-              external
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ─── PROCESS ─── */}
-      <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-5xl">
           <div className="text-center mb-16">
             <span className="section-label">PROCESSO</span>
@@ -179,23 +139,24 @@ export default function CoachingPage() {
         </div>
       </section>
 
-      {/* ─── FINAL CTA ─── */}
-      <section className="py-24 px-6">
+      {/* --- CTA --- */}
+      <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-4xl md:text-5xl tracking-wider text-white-warm">
             INIZIA LA TUA{" "}
             <span className="text-gold-gradient">TRASFORMAZIONE</span>
           </h2>
-          <p className="mt-4 text-gray-muted">
-            Scrivimi su WhatsApp per una call conoscitiva gratuita.
+          <p className="mt-6 text-gray-muted text-lg leading-relaxed">
+            Scrivimi su WhatsApp per una call conoscitiva gratuita. Valutiamo
+            insieme i tuoi obiettivi e costruiamo il percorso perfetto per te.
           </p>
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-gold mt-8 inline-block"
+            className="btn-gold mt-8 inline-block text-lg px-10 py-4"
           >
-            CONTATTAMI SU WHATSAPP
+            SCRIVIMI SU WHATSAPP PER INIZIARE IL TUO PERCORSO
           </a>
         </div>
       </section>
