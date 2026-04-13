@@ -54,6 +54,20 @@ export default function Footer() {
               </svg>
               <span className="text-sm">@andrea_mammoli</span>
             </a>
+
+            {/* YouTube */}
+            <a
+              href="https://www.youtube.com/@AndreaMammoliClassicPro"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+              className="inline-flex items-center gap-2 text-gray-muted hover:text-red-500 transition-colors mt-2"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              </svg>
+              <span className="text-sm">YouTube</span>
+            </a>
           </div>
 
           {/* Servizi */}
@@ -113,8 +127,71 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Sponsors */}
+        <div className="mt-14 pt-10 border-t border-gold/10">
+          <h4 className="font-heading text-lg tracking-wider text-white-warm text-center mb-8">
+            PARTNER &amp; SPONSOR
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+            {/* Tsunami Nutrition */}
+            <a
+              href="https://www.tsunaminutrition.it/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card p-6 flex flex-col items-center gap-4 hover:border-gold/30 transition-colors group"
+            >
+              <img
+                src="/tsunami-logo.jpg"
+                alt="Tsunami Nutrition"
+                className="h-12 w-auto object-contain brightness-90 group-hover:brightness-100 transition"
+              />
+              <div className="text-center">
+                <p className="text-sm text-white-warm font-medium">Tsunami Nutrition</p>
+                <p className="text-xs text-gold mt-1">
+                  Codice sconto: <span className="font-heading tracking-wider">ANDREA15</span>
+                </p>
+              </div>
+            </a>
+
+            {/* Insane Stone */}
+            <a
+              href="https://insanestone.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card p-6 flex flex-col items-center gap-4 hover:border-gold/30 transition-colors group"
+            >
+              <img
+                src="/insanestone-logo.png"
+                alt="Insane Stone"
+                className="h-12 w-auto object-contain brightness-90 group-hover:brightness-100 transition"
+              />
+              <div className="text-center">
+                <p className="text-sm text-white-warm font-medium">Insane Stone</p>
+                <p className="text-xs text-gold mt-1">
+                  Codice sconto: <span className="font-heading tracking-wider">ANDREA10</span>
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        {/* YouTube */}
+        <div className="mt-10 text-center">
+          <a
+            href="https://www.youtube.com/@AndreaMammoliClassicPro"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 text-gray-muted hover:text-red-500 transition-colors"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
+            <span className="text-sm font-medium">Seguimi su YouTube</span>
+          </a>
+        </div>
+
         {/* Bottom bar */}
-        <div className="mt-14 pt-6 border-t border-white-warm/5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-10 pt-6 border-t border-white-warm/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-dim">
             &copy; {new Date().getFullYear()} Andrea Mammoli. Tutti i diritti riservati.
             &nbsp;&middot;&nbsp; P.IVA: XXXXXXXXXX
