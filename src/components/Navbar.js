@@ -6,7 +6,7 @@ import Link from "next/link";
 const NAV_LINKS = [
   { label: "Chi Sono", href: "/chi-sono" },
   { label: "Coaching", href: "/coaching" },
-  { label: "Video Corso", href: "/corso" },
+  { label: "Posing", href: "/corso" },
   { label: "Contatti", href: "/contatti" },
 ];
 
@@ -36,8 +36,12 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
-        <Link href="/" className="font-heading text-2xl tracking-widest text-white-warm">
-          ANDREA MAMMOLI
+        <Link href="/">
+          <img
+            src="/logo.png"
+            alt="Andrea Mammoli"
+            className={`w-auto transition-all duration-300 ${scrolled ? "h-8" : "h-10"}`}
+          />
         </Link>
 
         {/* Desktop links */}
@@ -53,9 +57,14 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <Link href="/corso" className="btn-gold text-sm px-5 py-2.5">
+            <a
+              href="https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-gold text-sm px-5 py-2.5"
+            >
               INIZIA ORA
-            </Link>
+            </a>
           </li>
         </ul>
 
@@ -99,13 +108,15 @@ export default function Navbar() {
             {link.label}
           </Link>
         ))}
-        <Link
-          href="/corso"
+        <a
+          href="https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching"
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
           className="btn-gold mt-4 text-lg px-8 py-3"
         >
           INIZIA ORA
-        </Link>
+        </a>
       </div>
     </header>
   );

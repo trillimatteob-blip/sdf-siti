@@ -35,7 +35,7 @@ function useCountUp(target, shouldStart, duration = 2000) {
   return count;
 }
 
-function StatItem({ value, label, prefix = "", suffix = "", started }) {
+function StatItem({ value, label, sublabel, prefix = "", suffix = "", started }) {
   const numericValue = parseInt(String(value).replace(/\D/g, ""), 10) || 0;
   const animated = useCountUp(numericValue, started);
 
@@ -46,9 +46,14 @@ function StatItem({ value, label, prefix = "", suffix = "", started }) {
         {started ? animated : 0}
         {suffix}
       </p>
-      <p className="text-xs sm:text-sm tracking-wider text-gray-muted uppercase">
+      <p className="text-xs sm:text-sm tracking-wider text-white-warm uppercase font-heading">
         {label}
       </p>
+      {sublabel && (
+        <p className="text-xs text-gray-muted mt-1 max-w-[200px] mx-auto">
+          {sublabel}
+        </p>
+      )}
     </div>
   );
 }
@@ -85,6 +90,7 @@ export default function StatsCounter({ stats = [] }) {
           key={i}
           value={stat.value}
           label={stat.label}
+          sublabel={stat.sublabel}
           prefix={stat.prefix}
           suffix={stat.suffix}
           started={started}

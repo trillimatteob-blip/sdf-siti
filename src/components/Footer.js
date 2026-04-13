@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const SERVICES = [
   { label: "Coaching", href: "/coaching" },
-  { label: "Video Corso", href: "/corso" },
+  { label: "Video Posing", href: "/corso" },
   { label: "Consulenze", href: "/contatti" },
 ];
 
@@ -25,14 +25,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand column */}
           <div className="md:col-span-1">
-            <h3 className="font-heading text-2xl tracking-widest text-white-warm mb-2">
-              ANDREA MAMMOLI
-            </h3>
+            <Link href="/" className="inline-block mb-4">
+              <img src="/logo.png" alt="Andrea Mammoli" className="h-12 w-auto" />
+            </Link>
             <p className="text-sm text-gray-muted mb-6">IFBB Pro | 2x Olympian</p>
 
             {/* Instagram */}
             <a
-              href="https://www.instagram.com/andreamammoli"
+              href="https://www.instagram.com/andrea_mammoli/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -52,7 +52,7 @@ export default function Footer() {
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
               </svg>
-              <span className="text-sm">Instagram</span>
+              <span className="text-sm">@andrea_mammoli</span>
             </a>
           </div>
 
@@ -100,7 +100,7 @@ export default function Footer() {
               CONTATTAMI
             </h4>
             <a
-              href="https://wa.me/393516157497?text=Ciao%20Andrea!%20Vorrei%20info%20sul%20coaching"
+              href="https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-[#25d366] hover:text-[#5eeb8e] transition-colors"

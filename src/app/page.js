@@ -6,38 +6,46 @@ import FAQAccordion from "@/components/FAQAccordion";
 import StatsCounter from "@/components/StatsCounter";
 
 const WHATSAPP_URL =
-  "https://wa.me/393516157497?text=Ciao%20Andrea!%20Vorrei%20info%20sul%20coaching";
+  "https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching";
 
-const coachingFeatures = [
-  "Piano personalizzato",
-  "Check-in settimanali",
-  "Supporto WhatsApp",
-  "Posing coaching",
-  "Accesso community",
+const coaching6Features = [
+  "Scheda di allenamento personalizzata",
+  "Piano alimentare su misura",
+  "Check-in settimanali via foto/video",
+  "Supporto diretto WhatsApp",
+  "Analisi posing inclusa",
+];
+
+const coaching12Features = [
+  "Tutto del percorso semestrale",
+  "Accesso prioritario ad Andrea",
+  "Prep competitiva se richiesta",
+  "Sessione posing inclusa",
+  "Video analisi mensile del fisico",
 ];
 
 const stats = [
-  { value: "1°", label: "Primo Classic Physique Pro italiano" },
-  { value: "2×", label: "Qualificazioni Mr. Olympia" },
-  { value: "50K+", label: "Followers Instagram" },
-  { value: "200+", label: "Atleti seguiti" },
+  { value: "2", prefix: "", suffix: "\u00d7", label: "Mr. Olympia", sublabel: "Il palco pi\u00f9 grande del bodybuilding mondiale" },
+  { value: "23", suffix: " anni", label: "Primo titolo Pro", sublabel: "Il pi\u00f9 giovane Classic Physique Pro d\u2019Italia" },
+  { value: "335", suffix: "K", label: "Follower Instagram", sublabel: "Una delle community di bodybuilding pi\u00f9 grandi d\u2019Italia" },
+  { value: "100", suffix: "+", label: "Atleti seguiti", sublabel: "Centinaia di trasformazioni reali e risultati dimostrabili" },
 ];
 
 const testimonials = [
   {
     name: "Marco R.",
-    text: "Grazie ad Andrea ho raggiunto una forma che non pensavo possibile. Il suo approccio personalizzato ha fatto tutta la differenza nella mia preparazione gara.",
-    role: "Atleta Men's Physique",
+    text: "Non capivo perch\u00e9 perdevo in gara pur avendo un buon fisico. Dopo 3 mesi con Andrea ho rivoluzionato il mio posing. Gara successiva: podio.",
+    role: "Atleta Men\u2019s Physique",
   },
   {
-    name: "Luca D.",
-    text: "Il coaching di Andrea va oltre la semplice scheda. Il supporto costante e la sua esperienza da Pro ti danno una sicurezza unica sul palco e in off-season.",
-    role: "Atleta Classic Physique",
+    name: "Luca F.",
+    text: "In 12 mesi ho trasformato completamente il mio physique e la mia mentalit\u00e0. Andrea non ti d\u00e0 solo la scheda \u2014 ti insegna a pensare come un atleta.",
+    role: "Coaching 12 Mesi",
   },
   {
-    name: "Simone T.",
-    text: "Ho iniziato senza esperienza di gare e in 12 mesi ho vinto il mio primo regionale. Andrea sa esattamente come portarti al livello successivo.",
-    role: "Atleta Bodybuilding",
+    name: "Davide M.",
+    text: "Le video lezioni di posing valgono ogni centesimo. Ho imparato pi\u00f9 in 2 settimane di quanto avessi imparato in 2 anni da solo davanti allo specchio.",
+    role: "Pacchetto Video Posing",
   },
 ];
 
@@ -45,40 +53,40 @@ const faqItems = [
   {
     question: "Come funziona il coaching online?",
     answer:
-      "Dopo un'analisi iniziale del tuo fisico, obiettivi e stile di vita, creo un piano completamente personalizzato che include allenamento, nutrizione e posing. Ogni settimana facciamo un check-in per monitorare i progressi e aggiustare il piano.",
+      "Dopo il primo contatto su WhatsApp valutiamo insieme il tuo livello e i tuoi obiettivi. Ricevi una scheda di allenamento e un piano alimentare personalizzati. Check-in settimanali via foto o video, con aggiornamenti progressivi ogni mese.",
   },
   {
-    question: "Quanto costa il coaching?",
+    question: "Cosa include il pacchetto video lezioni di posing?",
     answer:
-      "Offriamo due piani: 6 mesi a 299 euro al mese e 12 mesi a 249 euro al mese. Il piano annuale offre il miglior valore e risultati piu consistenti.",
+      "Un ciclo completo di video lezioni sulle pose fondamentali del Classic Physique e del Men\u2019s Physique, con correzioni e consigli diretti da Andrea. Puoi rivederli quando vuoi, senza limiti di tempo.",
   },
   {
-    question: "Quanto dura il percorso minimo?",
+    question: "Posso prenotare una sessione di posing dal vivo?",
     answer:
-      "Il percorso minimo e di 6 mesi. Questo ci permette di costruire una base solida e vedere risultati tangibili. Per preparazioni gara consiglio almeno 12 mesi.",
+      "S\u00ec. Le sessioni in presenza si organizzano in base alla disponibilit\u00e0 di Andrea. Scrivi su WhatsApp e troviamo insieme la data e la location pi\u00f9 adatta a te.",
   },
   {
-    question: "Quando posso aspettarmi i primi risultati?",
+    question: "Qual \u00e8 la differenza tra coaching 6 e 12 mesi?",
     answer:
-      "I primi cambiamenti visibili arrivano generalmente entro 4-6 settimane. Risultati significativi si vedono dai 3 mesi in poi, con trasformazioni complete in 6-12 mesi.",
+      "Il percorso 12 mesi garantisce una trasformazione completa con accesso prioritario ad Andrea, prep competitiva inclusa e video analisi mensile. Il percorso 6 mesi \u00e8 ideale per chi ha gi\u00e0 una base e vuole accelerare verso un obiettivo specifico.",
   },
   {
-    question: "Come inizio?",
+    question: "Il coaching include la preparazione gara?",
     answer:
-      "Contattami su WhatsApp o compila il form nella pagina contatti. Fisseremo una call conoscitiva gratuita per capire i tuoi obiettivi e creare il piano perfetto per te.",
+      "S\u00ec, nel percorso 12 mesi. Include scheda peak week, dieta pre-gara, posing dedicato e supporto diretto di Andrea negli ultimi giorni prima del palco.",
   },
 ];
 
 const marqueeText =
-  "2× OLYMPIAN  ✦  WORLD BEST POSER 2026  ✦  TOP 3 ARNOLD CLASSIC OHIO  ✦  ";
+  "2\u00d7 OLYMPIAN  \u2726  WORLD BEST POSER 2026  \u2726  TOP 3 ARNOLD CLASSIC OHIO  \u2726  ";
 
 export default function HomePage() {
   return (
     <>
-      {/* ─── HERO ─── */}
+      {/* --- HERO --- */}
       <HeroSection />
 
-      {/* ─── MARQUEE BANNER ─── */}
+      {/* --- MARQUEE BANNER --- */}
       <div className="border-y border-gold/20 bg-black-card py-4 overflow-hidden">
         <div className="marquee-container">
           <div className="marquee-content font-heading text-xl md:text-2xl tracking-widest text-gold uppercase">
@@ -91,38 +99,38 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* ─── ABOUT / CHI SONO ─── */}
+      {/* --- ABOUT / CHI SONO --- */}
       <section className="py-24 px-6">
         <div className="mx-auto max-w-7xl grid md:grid-cols-2 gap-12 items-center">
-          {/* Image placeholder */}
-          <div className="aspect-[3/4] rounded-2xl bg-black-card border border-gold/10 flex items-center justify-center">
-            <span className="font-heading text-4xl text-gray-dim tracking-widest">
-              FOTO
-            </span>
+          {/* Photo */}
+          <div className="aspect-[3/4] rounded-2xl overflow-hidden border border-gold/10">
+            <img
+              src="/posing-outdoor.jpg"
+              alt="Andrea Mammoli - Classic Physique Posing"
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* Content */}
           <div className="animate-fade-up">
             <span className="section-label">CHI SONO</span>
             <h2 className="section-title mt-2">
-              ANDREA <span className="text-gold-gradient">MAMMOLI</span>
+              Il Regalo <span className="text-gold-gradient">Italiano.</span>
             </h2>
             <p className="font-accent italic text-lg text-gray-muted leading-relaxed mt-6">
-              IFBB Pro Bodybuilder, primo italiano a competere nella categoria
-              Classic Physique a livello professionistico. Due volte qualificato
-              per il Mr. Olympia e riconosciuto come World Best Poser 2026.
+              Sono Andrea Mammoli. Ho reso la mia passione un&apos;identit&agrave;, il sudore un metodo, il palco una casa.
             </p>
             <ul className="mt-8 space-y-3">
               {[
-                "IFBB Pro Classic Physique",
-                "2× Mr. Olympia Qualifier",
-                "Top 3 Arnold Classic Ohio",
-                "World Best Poser 2026",
-                "Coach di oltre 200 atleti",
+                "Primo Classic Physique Pro pi\u00f9 giovane d\u2019Italia \u2014 23 anni, 2021",
+                "2\u00d7 qualificato al Mr. Olympia \u2014 il palco pi\u00f9 grande del mondo",
+                "Top 3 Arnold Classic Ohio 2026",
+                "Nominato World Best Poser 2026",
+                "Personal Trainer certificato FIF & AICS",
               ].map((item) => (
-                <li key={item} className="flex items-center gap-3 text-white-warm">
-                  <span className="h-2 w-2 rounded-full bg-gold flex-shrink-0" />
-                  {item}
+                <li key={item} className="flex items-start gap-3 text-white-warm">
+                  <span className="h-2 w-2 rounded-full bg-gold flex-shrink-0 mt-1.5" />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -133,37 +141,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── STATS ─── */}
+      {/* --- STATS --- */}
       <section className="py-20 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-7xl">
           <StatsCounter stats={stats} />
         </div>
       </section>
 
-      {/* ─── COACHING ─── */}
+      {/* --- COACHING --- */}
       <section className="py-24 px-6">
         <div className="mx-auto max-w-7xl text-center">
           <span className="section-label">COACHING</span>
           <h2 className="section-title mt-2">
-            TRASFORMA IL TUO <span className="text-gold-gradient">FISICO</span>
+            Scegli il tuo <span className="text-gold-gradient">Percorso.</span>
           </h2>
+          <p className="mt-6 text-gray-muted max-w-2xl mx-auto text-lg">
+            Programmi costruiti su di te. Non schede generiche. Non metodi copiati. Il tuo corpo, il tuo ritmo, il tuo palco.
+          </p>
 
           <div className="mt-16 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <PricingCard
-              title="6 MESI"
-              price="299"
-              period="/mese"
-              features={coachingFeatures}
-              cta="INIZIA ORA"
+              title="Percorso Semestrale"
+              subtitle="6 mesi di coaching personalizzato"
+              features={coaching6Features}
+              ctaText="INIZIA ORA"
               ctaLink={WHATSAPP_URL}
               external
             />
             <PricingCard
-              title="12 MESI"
-              price="249"
-              period="/mese"
-              features={coachingFeatures}
-              cta="INIZIA ORA"
+              title="Percorso Annuale"
+              subtitle="12 mesi di trasformazione completa"
+              features={coaching12Features}
+              ctaText="INIZIA ORA"
               ctaLink={WHATSAPP_URL}
               featured
               external
@@ -172,54 +181,104 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── VIDEO CORSO ─── */}
-      <section className="py-24 px-6 bg-black-card border-y border-gold/10">
-        <div className="mx-auto max-w-7xl text-center">
-          <span className="section-label">VIDEO CORSO</span>
+      {/* --- POSING --- */}
+      <section className="relative py-24 px-6 overflow-hidden">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/palestra-bw.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="absolute inset-0 z-[1] bg-black-deep/80" />
+
+        <div className="relative z-10 mx-auto max-w-7xl text-center">
+          <span className="section-label">POSING</span>
           <h2 className="section-title mt-2">
-            VIDEO CORSO <span className="text-gold-gradient">POSING</span>
+            Il posing <span className="text-gold-gradient">Decide.</span>
           </h2>
           <p className="mt-6 text-gray-muted max-w-2xl mx-auto text-lg">
-            Impara le tecniche di posing usate dai professionisti. Lezioni
-            on-demand, feedback personalizzato e accesso illimitato.
+            Non &egrave; naturale. Si allena, si impara, si perfeziona. Impara dall&apos;atleta riconosciuto World Best Poser 2026.
           </p>
 
-          <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                icon: "▶",
-                title: "Video Lezioni On-Demand",
-                desc: "Accedi alle lezioni quando vuoi, dal tuo dispositivo preferito.",
-              },
-              {
-                icon: "◆",
-                title: "Tecniche Avanzate",
-                desc: "Le stesse tecniche che uso nelle competizioni IFBB Pro.",
-              },
-              {
-                icon: "★",
-                title: "Feedback Personalizzato",
-                desc: "Invia i tuoi video e ricevi correzioni dettagliate.",
-              },
-            ].map((feature) => (
-              <div key={feature.title} className="card p-8 text-center">
-                <div className="text-gold text-4xl mb-4">{feature.icon}</div>
-                <h3 className="font-heading text-xl tracking-wider text-white-warm">
-                  {feature.title}
-                </h3>
-                <p className="mt-3 text-gray-muted text-sm">{feature.desc}</p>
-              </div>
-            ))}
+          <div className="mt-16 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="card p-8 text-center">
+              <div className="text-gold text-4xl mb-4">&#9654;</div>
+              <h3 className="font-heading text-xl tracking-wider text-white-warm">
+                Video Lezioni On-Demand
+              </h3>
+              <p className="mt-3 text-gray-muted text-sm">
+                Accedi alle lezioni quando vuoi. Pose fondamentali, transizioni e routine complete per Classic Physique e Men&apos;s Physique.
+              </p>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost mt-6 inline-block text-sm"
+              >
+                INFO SU WHATSAPP
+              </a>
+            </div>
+            <div className="card p-8 text-center">
+              <div className="text-gold text-4xl mb-4">&#9733;</div>
+              <h3 className="font-heading text-xl tracking-wider text-white-warm">
+                Sessioni dal Vivo 1-to-1
+              </h3>
+              <p className="mt-3 text-gray-muted text-sm">
+                Sessioni in presenza con Andrea. Correzioni in tempo reale, analisi dettagliata e preparazione palco dedicata.
+              </p>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gold mt-6 inline-block text-sm"
+              >
+                PRENOTA ORA
+              </a>
+            </div>
           </div>
-
-          <Link href="/corso" className="btn-gold mt-12 inline-block">
-            SCOPRI IL CORSO
-          </Link>
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* --- PHOTO GALLERY --- */}
       <section className="py-24 px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <span className="section-label">GALLERY</span>
+            <h2 className="section-title mt-2">
+              Momenti <span className="text-gold-gradient">sul Palco</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { src: "/arnold-classic.jpg", label: "Arnold Classic Ohio 2026" },
+              { src: "/posing-outdoor.jpg", label: "Classic Physique Posing" },
+              { src: "/palestra-bw.jpg", label: "Il metodo quotidiano" },
+            ].map((photo) => (
+              <div
+                key={photo.src}
+                className="group relative aspect-[3/4] rounded-xl overflow-hidden border border-gold/10 cursor-pointer"
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.label}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black-deep/80 via-transparent to-transparent" />
+                <p className="absolute bottom-4 left-4 right-4 font-heading text-sm tracking-wider text-white-warm">
+                  {photo.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- TESTIMONIALS --- */}
+      <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-7xl text-center">
           <span className="section-label">TESTIMONIANZE</span>
           <h2 className="section-title mt-2">
@@ -239,8 +298,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── FAQ ─── */}
-      <section className="py-24 px-6 bg-black-card border-y border-gold/10">
+      {/* --- FAQ --- */}
+      <section className="py-24 px-6">
         <div className="mx-auto max-w-3xl">
           <div className="text-center mb-12">
             <span className="section-label">FAQ</span>
@@ -252,14 +311,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── FINAL CTA ─── */}
+      {/* --- FINAL CTA --- */}
       <section className="py-24 px-6 bg-gradient-to-br from-gold-dark via-gold to-gold-light">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-heading text-5xl md:text-7xl tracking-wider text-black-deep">
-            IL PALCO TI ASPETTA
+            Il palco ti aspetta.
           </h2>
-          <p className="mt-4 font-heading text-2xl tracking-widest text-black-deep/70">
-            POSTI LIMITATI
+          <p className="mt-4 font-heading text-xl md:text-2xl tracking-widest text-black-deep/70">
+            Ogni settimana senza metodo &egrave; una settimana di potenziale non espresso.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -271,10 +330,10 @@ export default function HomePage() {
               CONTATTAMI SU WHATSAPP
             </a>
             <Link
-              href="/corso"
+              href="/coaching"
               className="inline-block border-2 border-black-deep text-black-deep font-heading text-lg tracking-widest px-10 py-4 rounded-lg hover:bg-black-deep/10 transition-colors"
             >
-              SCOPRI IL CORSO
+              SCOPRI IL COACHING
             </Link>
           </div>
         </div>

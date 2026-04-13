@@ -9,7 +9,13 @@ export default function PricingCard({
   featured = false,
   ctaText = "INIZIA ORA",
   ctaLink = "/contatti",
+  external = false,
 }) {
+  const ButtonEl = external ? "a" : Link;
+  const extraProps = external
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+
   return (
     <div
       className={`card p-8 flex flex-col relative ${
@@ -32,12 +38,14 @@ export default function PricingCard({
       )}
 
       {/* Price */}
-      <div className="mb-6">
-        <span className="font-heading text-5xl text-gold-gradient">{price}</span>
-        {duration && (
-          <span className="text-sm text-gray-muted ml-2">/ {duration}</span>
-        )}
-      </div>
+      {price && (
+        <div className="mb-6">
+          <span className="font-heading text-5xl text-gold-gradient">{price}</span>
+          {duration && (
+            <span className="text-sm text-gray-muted ml-2">/ {duration}</span>
+          )}
+        </div>
+      )}
 
       {/* Features */}
       <ul className="flex-1 space-y-3 mb-8">
@@ -50,12 +58,13 @@ export default function PricingCard({
       </ul>
 
       {/* CTA */}
-      <Link
+      <ButtonEl
         href={ctaLink}
+        {...extraProps}
         className={`${featured ? "btn-gold" : "btn-ghost"} w-full text-center`}
       >
         {ctaText}
-      </Link>
+      </ButtonEl>
     </div>
   );
 }
