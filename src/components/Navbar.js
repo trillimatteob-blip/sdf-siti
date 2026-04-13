@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 const NAV_LINKS = [
-  { label: "Chi Sono", href: "/chi-sono" },
+  { label: "Chi Sono", href: "/#about" },
   { label: "Coaching", href: "/coaching" },
   { label: "Posing", href: "/corso" },
   { label: "Contatti", href: "/contatti" },
@@ -13,11 +14,24 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Check auth state
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user ?? null);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   // lock body scroll when mobile menu is open
@@ -56,6 +70,34 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+
+          {/* Area Utente / Login */}
+          <li>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 text-sm tracking-wider text-gold hover:text-gold-light transition-colors duration-200"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                </svg>
+                Area Utente
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center gap-2 text-sm tracking-wider text-gray-muted hover:text-gold transition-colors duration-200"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                </svg>
+                Accedi
+              </Link>
+            )}
+          </li>
+
           <li>
             <a
               href="https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching"
@@ -108,6 +150,26 @@ export default function Navbar() {
             {link.label}
           </Link>
         ))}
+
+        {/* Mobile: Area Utente / Login */}
+        {user ? (
+          <Link
+            href="/dashboard"
+            onClick={() => setMobileOpen(false)}
+            className="font-heading text-3xl tracking-widest text-gold hover:text-gold-light transition-colors"
+          >
+            Area Utente
+          </Link>
+        ) : (
+          <Link
+            href="/login"
+            onClick={() => setMobileOpen(false)}
+            className="font-heading text-3xl tracking-widest text-white-warm hover:text-gold transition-colors"
+          >
+            Accedi
+          </Link>
+        )}
+
         <a
           href="https://wa.me/393516157497?text=Ciao%20Andrea%2C%20vorrei%20iniziare%20il%20mio%20percorso%20di%20coaching"
           target="_blank"

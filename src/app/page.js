@@ -277,6 +277,31 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* --- ACCEDI AL CORSO --- */}
+      <section className="py-20 px-6 bg-black-card border-y border-gold/10">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="section-label">AREA STUDENTI</span>
+          <h2 className="section-title mt-2">
+            Hai gi&agrave; acquistato? <span className="text-gold-gradient">Accedi ora.</span>
+          </h2>
+          <p className="mt-6 text-gray-muted text-lg max-w-xl mx-auto">
+            Entra nella tua area personale per seguire il video corso, monitorare i tuoi progressi e accedere ai contenuti esclusivi.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/dashboard" className="btn-gold text-base px-8 py-4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="inline-block mr-2">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              ACCEDI ALLA DASHBOARD
+            </Link>
+            <Link href="/login" className="btn-ghost text-base px-8 py-4">
+              LOGIN / REGISTRATI
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* --- TESTIMONIALS --- */}
       <section className="py-24 px-6 bg-black-card border-y border-gold/10">
         <div className="mx-auto max-w-7xl text-center">
