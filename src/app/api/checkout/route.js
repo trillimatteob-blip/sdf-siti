@@ -1,46 +1,53 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 
-/**
- * POST /api/checkout
- *
- * Creates a Stripe Checkout Session for course purchase.
- *
- * TODO: Implement Stripe integration
- * ────────────────────────────────────
- * 1. Install Stripe: npm install stripe
- * 2. Add env vars: STRIPE_SECRET_KEY, STRIPE_PRICE_ID, NEXT_PUBLIC_BASE_URL
- * 3. Create a Stripe product + price for the Video Corso (€497 one-time)
- * 4. Implement the checkout session creation:
- *
- *    import Stripe from "stripe";
- *    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
- *
- *    const session = await stripe.checkout.sessions.create({
- *      mode: "payment",
- *      payment_method_types: ["card"],
- *      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
- *      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
- *      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/cancel`,
- *      customer_email: body.email, // optional, pre-fill email
- *      metadata: { userId: body.userId },
- *    });
- *
- * 5. Return the session URL for redirect
- */
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
+
+function getTierPrices() {
+  return {
+    base: process.env.STRIPE_PRICE_BASE,
+    pro: process.env.STRIPE_PRICE_PRO,
+    elite: process.env.STRIPE_PRICE_ELITE,
+  };
+}
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    const { tier, userId, email } = await request.json();
 
-    // TODO: Replace with actual Stripe session creation
-    // For now, return a placeholder redirect to the success page
-    const checkoutUrl = "/checkout/success";
+    const tierPrices = getTierPrices();
 
-    return NextResponse.json({
-      url: checkoutUrl,
-      message: "Stripe checkout non ancora configurato. Redirect al placeholder.",
+    if (!tier || !tierPrices[tier]) {
+      return NextResponse.json(
+        { error: "Tier non valido." },
+        { status: 400 }
+      );
+    }
+
+    const priceId = tierPrices[tier];
+    if (!priceId) {
+      return NextResponse.json(
+        { error: `Prezzo Stripe non configurato per il tier ${tier}.` },
+        { status: 500 }
+      );
+    }
+
+    const stripe = getStripe();
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/cancel`,
+      customer_email: email || undefined,
+      metadata: { userId, tier },
     });
+
+    return NextResponse.json({ url: session.url });
   } catch (error) {
+    console.error("Checkout error:", error);
     return NextResponse.json(
       { error: "Errore nella creazione della sessione di checkout." },
       { status: 500 }

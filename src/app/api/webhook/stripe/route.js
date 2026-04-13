@@ -1,62 +1,64 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 
-/**
- * POST /api/webhook/stripe
- *
- * Handles Stripe webhook events (e.g., checkout.session.completed).
- *
- * TODO: Implement Stripe webhook verification and handling
- * ──────────────────────────────────────────────────────────
- *
- * 1. Add env var: STRIPE_WEBHOOK_SECRET (from Stripe Dashboard > Webhooks)
- *
- * 2. Verify the webhook signature:
- *
- *    import Stripe from "stripe";
- *    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
- *
- *    const sig = request.headers.get("stripe-signature");
- *    const body = await request.text();
- *    const event = stripe.webhooks.constructEvent(
- *      body,
- *      sig,
- *      process.env.STRIPE_WEBHOOK_SECRET
- *    );
- *
- * 3. Handle the event:
- *
- *    if (event.type === "checkout.session.completed") {
- *      const session = event.data.object;
- *      const userId = session.metadata.userId;
- *      const customerEmail = session.customer_email;
- *
- *      // Update the purchases table in Supabase:
- *      // await supabaseAdmin.from("purchases").insert({
- *      //   user_id: userId,
- *      //   product: "video-corso-posing",
- *      //   stripe_session_id: session.id,
- *      //   amount: session.amount_total,
- *      //   status: "completed",
- *      //   created_at: new Date().toISOString(),
- *      // });
- *    }
- *
- * 4. Use a Supabase service-role client (not the anon client) for
- *    server-side database operations in webhooks.
- *
- * 5. Configure the webhook URL in Stripe Dashboard:
- *    https://yourdomain.com/api/webhook/stripe
- *    Events to listen for: checkout.session.completed
- */
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
+
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://hnkblrsbhbtxfekgfhvg.supabase.co",
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
 
 export async function POST(request) {
   try {
-    // TODO: Implement webhook verification and handling (see comments above)
-
     const body = await request.text();
+    const sig = request.headers.get("stripe-signature");
 
-    // Placeholder: log that we received a webhook
-    console.log("Stripe webhook received (not yet verified)");
+    const stripe = getStripe();
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.error("Webhook signature verification failed:", err.message);
+      return NextResponse.json(
+        { error: "Firma webhook non valida." },
+        { status: 400 }
+      );
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const userId = session.metadata?.userId;
+      const tier = session.metadata?.tier;
+
+      if (userId && tier) {
+        const supabaseAdmin = getSupabaseAdmin();
+        const { error } = await supabaseAdmin.from("purchases").insert({
+          user_id: userId,
+          tier,
+          stripe_session_id: session.id,
+          stripe_payment_intent: session.payment_intent,
+          amount: session.amount_total,
+          status: "completed",
+        });
+
+        if (error) {
+          console.error("Error inserting purchase:", error);
+          return NextResponse.json(
+            { error: "Errore nel salvataggio dell'acquisto." },
+            { status: 500 }
+          );
+        }
+      }
+    }
 
     return NextResponse.json({ received: true });
   } catch (error) {
