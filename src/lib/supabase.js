@@ -1,12 +1,26 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+let _supabase = null;
 
-// Lazy init: only create the client when env vars are available.
-// During Vercel build (no env vars), supabase will be null.
-// Client-side pages check auth at runtime when env vars are injected.
+export function getSupabase() {
+  if (_supabase) return _supabase;
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (url && key) {
+    _supabase = createClient(url, key);
+  }
+
+  return _supabase;
+}
+
+// For backward compatibility — but prefer getSupabase() in client components
 export const supabase =
-  supabaseUrl && supabaseAnonKey
-    ? createClient(supabaseUrl, supabaseAnonKey)
+  typeof window !== "undefined"
+    ? (() => {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        return url && key ? createClient(url, key) : null;
+      })()
     : null;

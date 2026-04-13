@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export default function AuthGuard({ children }) {
   const [loading, setLoading] = useState(true);
@@ -11,11 +11,17 @@ export default function AuthGuard({ children }) {
 
   useEffect(() => {
     let mounted = true;
+    const sb = getSupabase();
+
+    if (!sb) {
+      router.replace("/login");
+      return;
+    }
 
     async function checkAuth() {
       const {
         data: { session },
-      } = await supabase.auth.getSession();
+      } = await sb.auth.getSession();
 
       if (!mounted) return;
 
@@ -31,7 +37,7 @@ export default function AuthGuard({ children }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = sb.auth.onAuthStateChange((_event, session) => {
       if (!mounted) return;
       if (session) {
         setAuthenticated(true);

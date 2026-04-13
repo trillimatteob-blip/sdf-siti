@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const NAV_LINKS = [
   { label: "Chi Sono", href: "/#about" },
@@ -24,11 +24,12 @@ export default function Navbar() {
 
   // Check auth state
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => {
+    const sb = getSupabase();
+    if (!sb) return;
+    sb.auth.getSession().then(({ data }) => {
       setUser(data.session?.user ?? null);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = sb.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
     return () => listener.subscription.unsubscribe();

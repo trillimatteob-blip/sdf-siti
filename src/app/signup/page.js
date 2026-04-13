@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -21,9 +21,10 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      if (!supabase) throw new Error("Servizio non disponibile. Riprova più tardi.");
+      const sb = getSupabase();
+      if (!sb) throw new Error("Servizio non disponibile. Riprova più tardi.");
 
-      const { data, error: authError } = await supabase.auth.signUp({
+      const { data, error: authError } = await sb.auth.signUp({
         email,
         password,
         options: {

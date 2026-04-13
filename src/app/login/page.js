@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +18,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { error: authError } = await supabase.auth.signInWithPassword({
+      const sb = getSupabase();
+      if (!sb) throw new Error("Servizio non disponibile. Riprova più tardi.");
+      const { error: authError } = await sb.auth.signInWithPassword({
         email,
         password,
       });

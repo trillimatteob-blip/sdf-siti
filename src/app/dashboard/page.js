@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthGuard from "@/components/AuthGuard";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -18,14 +18,14 @@ export default function DashboardPage() {
     const getUser = async () => {
       const {
         data: { user: currentUser },
-      } = await supabase.auth.getUser();
+      } = await getSupabase()?.auth.getUser();
       setUser(currentUser);
     };
     getUser();
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await getSupabase()?.auth.signOut();
     router.push("/");
   };
 
