@@ -14,20 +14,20 @@ export async function POST(request) {
       );
     }
 
-    // Try Supabase first, fall back to in-memory log
-    try {
-      const { error } = await supabase.from("contatti").insert({
-        nome,
-        email,
-        messaggio,
-      });
-
-      if (error) {
-        // Supabase table may not exist yet — log and return success anyway
-        console.warn("Supabase insert warning:", error.message);
+    // Save to Supabase if available
+    if (supabase) {
+      try {
+        const { error } = await supabase.from("contatti").insert({
+          nome,
+          email,
+          messaggio,
+        });
+        if (error) {
+          console.warn("Supabase insert warning:", error.message);
+        }
+      } catch (e) {
+        console.warn("Supabase not available:", e.message);
       }
-    } catch (e) {
-      console.warn("Supabase not available:", e.message);
     }
 
     return Response.json({ ok: true });

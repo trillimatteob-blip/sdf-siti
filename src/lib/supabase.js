@@ -1,8 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Create client even with empty strings — pages that use auth
-// will fail gracefully at runtime if env vars are missing.
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Lazy init: only create the client when env vars are available.
+// During Vercel build (no env vars), supabase will be null.
+// Client-side pages check auth at runtime when env vars are injected.
+export const supabase =
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;

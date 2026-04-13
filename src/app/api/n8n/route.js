@@ -39,6 +39,13 @@ export async function POST(request) {
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
+  if (!supabase) {
+    return Response.json(
+      { error: "Supabase not configured" },
+      { status: 500 },
+    );
+  }
+
   const { error } = await supabase.from(tableName).insert({
     payload,
     received_at: new Date().toISOString(),
