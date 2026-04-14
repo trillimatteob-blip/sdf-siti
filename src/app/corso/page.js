@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TIERS } from "@/lib/tiers";
 
 const modules = [
   {
@@ -145,39 +146,82 @@ export default function CorsoPage() {
         </div>
       </section>
 
-      {/* --- CTA AREA RISERVATA --- */}
+      {/* --- PRICING TIERS --- */}
       <section className="py-24 px-6 bg-black-card border-y border-gold/10">
-        <div className="mx-auto max-w-xl text-center">
-          <span className="section-label">ACQUISTA</span>
-          <h2 className="section-title mt-2">
-            INVESTI NEL TUO <span className="text-gold-gradient">PALCO</span>
-          </h2>
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-4">
+            <span className="section-label">ACQUISTA</span>
+            <h2 className="section-title mt-2">
+              INVESTI NEL TUO <span className="text-gold-gradient">PALCO</span>
+            </h2>
+            <p className="mt-4 text-gray-muted max-w-xl mx-auto">
+              Tre livelli per ogni fase del tuo percorso. Offerta di lancio a
+              tempo limitato.
+            </p>
+          </div>
 
-          <div className="card-featured p-10 mt-12">
-            <p className="text-gray-muted text-sm tracking-wider uppercase">
-              Video Corso Posing Professionale
-            </p>
-            <p className="mt-4 text-white-warm text-lg leading-relaxed">
-              Acquista il video corso dalla tua area personale. Disponibile in 3 livelli.
-            </p>
-            <ul className="mt-8 space-y-3 text-left">
-              {[
-                "BASE — Fondamentali e pose base",
-                "PRO — Routine individuale e stage presence",
-                "ELITE — Accesso completo + feedback video personalizzato",
-              ].map((f) => (
-                <li key={f} className="flex items-center gap-3 text-white-warm">
-                  <span className="h-2 w-2 rounded-full bg-gold flex-shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/dashboard"
-              className="btn-gold w-full mt-10 inline-block text-center"
-            >
-              ACCEDI ALL&apos;AREA RISERVATA
-            </Link>
+          <div className="grid md:grid-cols-3 gap-8 mt-12">
+            {TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`card p-8 flex flex-col relative ${
+                  tier.featured ? "card-featured" : ""
+                }`}
+              >
+                {/* Badge */}
+                {tier.badge && (
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gold text-black-deep font-heading text-xs tracking-widest px-4 py-1">
+                    {tier.badge}
+                  </span>
+                )}
+
+                {/* Title */}
+                <h3 className="font-heading text-2xl tracking-wider text-white-warm text-center mb-1">
+                  {tier.name}
+                </h3>
+
+                {/* Price */}
+                <div className="text-center mb-6">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <span className="text-gray-muted text-xl line-through decoration-gold/60">
+                      {tier.priceBase}€
+                    </span>
+                    <span className="text-xs font-heading tracking-widest text-gold bg-gold/10 px-2 py-0.5 rounded">
+                      OFFERTA LANCIO
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-heading text-5xl text-gold-gradient">
+                      {tier.priceLaunch}
+                    </span>
+                    <span className="text-gray-muted text-lg ml-1">EUR</span>
+                  </div>
+                </div>
+
+                {/* Features */}
+                <ul className="flex-1 space-y-3 mb-8">
+                  {tier.features.map((feature, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3 text-sm text-gray-muted"
+                    >
+                      <span className="text-gold text-xs mt-1">&#9670;</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Link
+                  href="/dashboard"
+                  className={`${
+                    tier.featured ? "btn-gold" : "btn-ghost"
+                  } w-full text-center`}
+                >
+                  ACQUISTA ORA
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

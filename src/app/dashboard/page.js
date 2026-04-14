@@ -192,10 +192,20 @@ export default function DashboardPage() {
 
                     {/* Price */}
                     <div className="text-center mb-6">
-                      <span className="font-heading text-5xl text-gold-gradient">
-                        {tier.price}
-                      </span>
-                      <span className="text-gray-muted text-lg ml-1">EUR</span>
+                      <div className="flex items-center justify-center gap-2 mb-1">
+                        <span className="text-gray-muted text-xl line-through decoration-gold/60">
+                          {tier.priceBase}€
+                        </span>
+                        <span className="text-xs font-heading tracking-widest text-gold bg-gold/10 px-2 py-0.5 rounded">
+                          OFFERTA LANCIO
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-heading text-5xl text-gold-gradient">
+                          {tier.priceLaunch}
+                        </span>
+                        <span className="text-gray-muted text-lg ml-1">EUR</span>
+                      </div>
                     </div>
 
                     {/* Features */}
