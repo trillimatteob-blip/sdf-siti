@@ -162,9 +162,9 @@ export default function CorsoPage() {
             </p>
             <ul className="mt-8 space-y-3 text-left">
               {[
-                "BASE — Fondamentali e pose base",
-                "PRO — Routine individuale e stage presence",
-                "ELITE — Accesso completo + feedback video personalizzato",
+                "BASE — AM Posing School (intro + pose) + Challenge",
+                "PRO — AM Posing School + Masterclass + Challenge",
+                "ELITE — AM Posing School completa + 1:1 con Andrea",
               ].map((f) => (
                 <li key={f} className="flex items-center gap-3 text-white-warm">
                   <span className="h-2 w-2 rounded-full bg-gold flex-shrink-0" />
