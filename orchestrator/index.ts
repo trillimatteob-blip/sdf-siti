@@ -149,6 +149,24 @@ function tryParseJson(text: string): unknown {
 }
 
 /**
+ * Read a previously-written agent output file, if it exists. Returns `null`
+ * on any read/parse failure — a corrupt cache file should not wedge the
+ * pipeline; we'll just rerun the agent.
+ */
+async function readCachedOutput(
+  outputPath: string,
+): Promise<AgentRecord | null> {
+  try {
+    const raw = await fs.readFile(outputPath, "utf8");
+    const parsed = JSON.parse(raw) as AgentRecord;
+    if (typeof parsed !== "object" || parsed === null) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Serialize previous output for the next agent's user message. If the
  * previous agent returned parseable JSON we pretty-print it so the next agent
  * sees a structured input; otherwise we pass the raw text.
@@ -207,6 +225,21 @@ async function main(): Promise<void> {
 
   for (const [index, agent] of PIPELINE.entries()) {
     const step = `[${index + 1}/${PIPELINE.length}]`;
+    const outputPath = path.join(outputsDir, `${agent.name}.json`);
+
+    // Resume support: if a previous run already produced this agent's output,
+    // skip the API call and feed the cached result forward. Delete the file
+    // (or pass --fresh, not implemented) to force a re-run.
+    const cached = await readCachedOutput(outputPath);
+    if (cached) {
+      console.log(
+        `${step} ${agent.name} - cached (skipping API call) -> orchestrator/outputs/${agent.name}.json`,
+      );
+      previousAgent = agent.name;
+      previousOutput = cached.output;
+      continue;
+    }
+
     const userMessage = buildUserMessage(idea, previousAgent, previousOutput);
 
     console.log(`${step} ${agent.name} - running`);
@@ -250,7 +283,6 @@ async function main(): Promise<void> {
       durationMs,
     };
 
-    const outputPath = path.join(outputsDir, `${agent.name}.json`);
     await fs.writeFile(
       outputPath,
       `${JSON.stringify(record, null, 2)}\n`,
