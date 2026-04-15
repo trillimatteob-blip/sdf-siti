@@ -45,8 +45,35 @@ export async function signInWithPassword(
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) return { error: error.message };
 
-  const redirectTo = (formData.get("redirect") as string | null) ?? "/dashboard";
+  // The hidden `redirect` field in the login form may arrive as an empty
+  // string (when /login was opened with no ?redirect= query param). `??`
+  // does NOT treat "" as nullish, so we validate explicitly. We also force
+  // the target to be a same-origin absolute path so a malicious referrer
+  // can't turn this into an open-redirect gadget via e.g.
+  // `redirect=https://evil.com`.
+  const rawRedirect = formData.get("redirect");
+  const redirectTo = sanitizeRedirect(
+    typeof rawRedirect === "string" ? rawRedirect : null,
+  );
   redirect(redirectTo);
+}
+
+/**
+ * Return a safe same-origin path to redirect to. Accepts absolute paths
+ * starting with a single `/` and rejects protocol-relative (`//...`) or
+ * externally-absolute URLs to prevent open-redirect attacks. Falls back to
+ * `/dashboard` for any invalid or missing input.
+ */
+function sanitizeRedirect(raw: string | null): string {
+  if (!raw) return "/dashboard";
+  const trimmed = raw.trim();
+  if (!trimmed) return "/dashboard";
+  // Must start with exactly one slash, not two — `//example.com` is a
+  // protocol-relative URL and would navigate off-site.
+  if (!trimmed.startsWith("/") || trimmed.startsWith("//")) {
+    return "/dashboard";
+  }
+  return trimmed;
 }
 
 export async function signInWithMagicLink(

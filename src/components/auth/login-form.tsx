@@ -53,7 +53,9 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
 
       {mode === "password" ? (
         <form action={passwordAction} className="space-y-4">
-          <input type="hidden" name="redirect" value={redirectTo ?? ""} />
+          {redirectTo ? (
+            <input type="hidden" name="redirect" value={redirectTo} />
+          ) : null}
           <Field
             label="Email"
             id="email"
