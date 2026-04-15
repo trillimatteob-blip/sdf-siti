@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.89.0",
     "@react-email/components": "^1.0.12",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.103.1",
@@ -32,6 +33,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   }
 }
