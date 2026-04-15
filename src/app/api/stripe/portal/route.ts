@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe/server";
 import { createClient } from "@/lib/supabase/server";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/absolute-url";
 
 export async function POST() {
   const supabase = await createClient();
@@ -28,7 +28,7 @@ export async function POST() {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: profile.stripe_customer_id,
-    return_url: absoluteUrl("/dashboard/billing"),
+    return_url: await absoluteUrl("/dashboard/billing"),
   });
 
   return NextResponse.json({ url: session.url });

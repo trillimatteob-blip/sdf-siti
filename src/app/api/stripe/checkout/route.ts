@@ -4,7 +4,7 @@ import { getPlanByTier, resolveStripePriceId } from "@/lib/plans";
 import { stripe } from "@/lib/stripe/server";
 import { createClient } from "@/lib/supabase/server";
 import type { PlanTier } from "@/lib/supabase/types";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/absolute-url";
 
 /**
  * Starts a Stripe Checkout session for the signed-in user.
@@ -63,8 +63,8 @@ export async function POST(request: NextRequest) {
     mode: "subscription",
     customer: customerId,
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: absoluteUrl("/dashboard/billing?checkout=success"),
-    cancel_url: absoluteUrl("/dashboard/billing?checkout=cancelled"),
+    success_url: await absoluteUrl("/dashboard/billing?checkout=success"),
+    cancel_url: await absoluteUrl("/dashboard/billing?checkout=cancelled"),
     allow_promotion_codes: true,
     client_reference_id: user.id,
     subscription_data: {

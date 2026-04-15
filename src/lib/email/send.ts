@@ -2,20 +2,21 @@ import { EMAIL_FROM, getResend } from "@/lib/email/client";
 import { PaymentConfirmationEmail } from "@/lib/email/templates/payment-confirmation";
 import { PasswordResetEmail } from "@/lib/email/templates/password-reset";
 import { WelcomeEmail } from "@/lib/email/templates/welcome";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/absolute-url";
 
 export async function sendWelcomeEmail(params: {
   to: string;
   name: string;
 }) {
   const resend = getResend();
+  const dashboardUrl = await absoluteUrl("/dashboard");
   return resend.emails.send({
     from: EMAIL_FROM,
     to: params.to,
     subject: "Welcome to SaaS Starter",
     react: WelcomeEmail({
       name: params.name,
-      dashboardUrl: absoluteUrl("/dashboard"),
+      dashboardUrl,
     }),
   });
 }

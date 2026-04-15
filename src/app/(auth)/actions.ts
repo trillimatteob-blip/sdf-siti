@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { sendWelcomeEmail } from "@/lib/email/send";
 import { createClient } from "@/lib/supabase/server";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl } from "@/lib/absolute-url";
 
 const EmailPasswordSchema = z.object({
   email: z.string().email(),
@@ -62,7 +62,7 @@ export async function signInWithMagicLink(
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
     options: {
-      emailRedirectTo: absoluteUrl("/auth/callback"),
+      emailRedirectTo: await absoluteUrl("/auth/callback"),
     },
   });
   if (error) return { error: error.message };
@@ -89,7 +89,7 @@ export async function signUp(
     password: parsed.data.password,
     options: {
       data: { full_name: parsed.data.fullName },
-      emailRedirectTo: absoluteUrl("/auth/callback"),
+      emailRedirectTo: await absoluteUrl("/auth/callback"),
     },
   });
   if (error) return { error: error.message };
@@ -126,7 +126,7 @@ export async function requestPasswordReset(
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(
     parsed.data.email,
-    { redirectTo: absoluteUrl("/update-password") },
+    { redirectTo: await absoluteUrl("/update-password") },
   );
   if (error) return { error: error.message };
 
