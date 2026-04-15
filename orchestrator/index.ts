@@ -29,6 +29,7 @@ import { systemPrompt as specWriterPrompt } from "./agents/spec-writer";
 import { systemPrompt as dbArchitectPrompt } from "./agents/db-architect";
 import { systemPrompt as codeGeneratorPrompt } from "./agents/code-generator";
 import { systemPrompt as codeReviewerPrompt } from "./agents/code-reviewer";
+import { systemPrompt as fixAgentPrompt } from "./agents/fix-agent";
 import { systemPrompt as deployAgentPrompt } from "./agents/deploy-agent";
 
 const MODEL = "claude-opus-4-6";
@@ -37,6 +38,17 @@ const MAX_TOKENS = 64_000;
 interface AgentConfig {
   name: string;
   systemPrompt: string;
+  /**
+   * Names of previously-run agents whose cached outputs should also be
+   * included in this agent's user message, beyond the immediate predecessor.
+   * The orchestrator reads the listed `outputs/<name>.json` files from disk
+   * and appends their `output` field as additional context.
+   *
+   * Used by fix-agent, which needs both code-reviewer (its immediate
+   * predecessor, with the list of issues) and code-generator (the original
+   * files to patch).
+   */
+  extraInputs?: readonly string[];
 }
 
 const PIPELINE: readonly AgentConfig[] = [
@@ -45,6 +57,11 @@ const PIPELINE: readonly AgentConfig[] = [
   { name: "db-architect", systemPrompt: dbArchitectPrompt },
   { name: "code-generator", systemPrompt: codeGeneratorPrompt },
   { name: "code-reviewer", systemPrompt: codeReviewerPrompt },
+  {
+    name: "fix-agent",
+    systemPrompt: fixAgentPrompt,
+    extraInputs: ["code-generator"],
+  },
   { name: "deploy-agent", systemPrompt: deployAgentPrompt },
 ];
 
@@ -166,31 +183,66 @@ async function readCachedOutput(
   }
 }
 
+interface ExtraInput {
+  agent: string;
+  output: unknown;
+}
+
+/**
+ * Stringify an agent output for inclusion in the next agent's user message.
+ * JSON objects are pretty-printed; raw strings are passed through.
+ */
+function serializeOutput(output: unknown): string {
+  return typeof output === "string"
+    ? output
+    : JSON.stringify(output, null, 2);
+}
+
 /**
  * Serialize previous output for the next agent's user message. If the
  * previous agent returned parseable JSON we pretty-print it so the next agent
- * sees a structured input; otherwise we pass the raw text.
+ * sees a structured input; otherwise we pass the raw text. Any `extras`
+ * (cached outputs from non-adjacent predecessors) are appended as clearly
+ * labelled additional context blocks.
  */
 function buildUserMessage(
   idea: string,
   previousAgent: string | null,
   previousOutput: unknown,
+  extras: readonly ExtraInput[] = [],
 ): string {
   if (previousAgent === null || previousOutput === null) {
-    return `Product idea:\n${idea}`;
+    // First agent in the pipeline — no upstream context.
+    if (extras.length === 0) {
+      return `Product idea:\n${idea}`;
+    }
+    const parts: string[] = [`Original product idea:\n${idea}`];
+    for (const extra of extras) {
+      parts.push(
+        "",
+        `Additional context — ${extra.agent} output:`,
+        serializeOutput(extra.output),
+      );
+    }
+    return parts.join("\n");
   }
 
-  const serialized =
-    typeof previousOutput === "string"
-      ? previousOutput
-      : JSON.stringify(previousOutput, null, 2);
-
-  return [
+  const parts: string[] = [
     `Original product idea:\n${idea}`,
     "",
     `Previous agent (${previousAgent}) output:`,
-    serialized,
-  ].join("\n");
+    serializeOutput(previousOutput),
+  ];
+
+  for (const extra of extras) {
+    parts.push(
+      "",
+      `Additional context — ${extra.agent} output:`,
+      serializeOutput(extra.output),
+    );
+  }
+
+  return parts.join("\n");
 }
 
 async function main(): Promise<void> {
@@ -240,7 +292,32 @@ async function main(): Promise<void> {
       continue;
     }
 
-    const userMessage = buildUserMessage(idea, previousAgent, previousOutput);
+    // Load any declared extra inputs from disk. These are cached outputs of
+    // earlier-but-non-adjacent agents (e.g. fix-agent needs both code-reviewer
+    // — its immediate predecessor — and code-generator — the files to patch).
+    const extras: ExtraInput[] = [];
+    if (agent.extraInputs && agent.extraInputs.length > 0) {
+      for (const extraName of agent.extraInputs) {
+        const extraPath = path.join(outputsDir, `${extraName}.json`);
+        const extraCached = await readCachedOutput(extraPath);
+        if (!extraCached) {
+          console.error(
+            `${step} ${agent.name} - missing required extra input '${extraName}' ` +
+              `(expected orchestrator/outputs/${extraName}.json). ` +
+              `Run the pipeline from the beginning or produce that file first.`,
+          );
+          process.exit(1);
+        }
+        extras.push({ agent: extraName, output: extraCached.output });
+      }
+    }
+
+    const userMessage = buildUserMessage(
+      idea,
+      previousAgent,
+      previousOutput,
+      extras,
+    );
 
     console.log(`${step} ${agent.name} - running`);
     const started = Date.now();
