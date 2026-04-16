@@ -25,4 +25,91 @@ IDEA=${2:-}
 [ -z "$PROJECT_NAME" ] && error "Usage: ./scripts/new-project.sh 'project-name' 'idea'"
 [ -z "$IDEA" ] && error "Usage: ./scripts/new-project.sh 'project-name' 'idea'"
 
+create_github_repo() {
+  log "Creating GitHub repo: $PROJECT_NAME..."
+  gh repo create "$PROJECT_NAME" --private --clone
+  cd "$PROJECT_NAME"
+  git remote add template https://github.com/trillimatteob-blip/sdf-siti.git
+  git fetch template claude/saas-starter-template-ZELcw
+  git checkout -b main template/claude/saas-starter-template-ZELcw
+  git remote remove template
+  git push origin main
+  success "GitHub repo created: https://github.com/$(gh api user -q .login)/$PROJECT_NAME"
+}
+
+create_supabase_project() {
+  log "Creating Supabase project..."
+  SUPABASE_ORG_ID=$(curl -s https://api.supabase.com/v1/organizations \
+    -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" | \
+    python3 -c "import sys,json; print(json.load(sys.stdin)[0]['id'])")
+
+  RESPONSE=$(curl -s -X POST https://api.supabase.com/v1/projects \
+    -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"$PROJECT_NAME\",\"organization_id\":\"$SUPABASE_ORG_ID\",\"plan\":\"free\",\"region\":\"eu-central-1\",\"db_pass\":\"$(openssl rand -base64 16)\"}")
+
+  PROJECT_REF=$(echo $RESPONSE | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+
+  log "Waiting for Supabase to be ready..."
+  for i in {1..30}; do
+    STATUS=$(curl -s https://api.supabase.com/v1/projects/$PROJECT_REF \
+      -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" | \
+      python3 -c "import sys,json; print(json.load(sys.stdin).get('status',''))")
+    [ "$STATUS" = "ACTIVE_HEALTHY" ] && break
+    sleep 10
+  done
+
+  SUPABASE_URL="https://$PROJECT_REF.supabase.co"
+  SUPABASE_ANON_KEY=$(curl -s https://api.supabase.com/v1/projects/$PROJECT_REF/api-keys \
+    -H "Authorization: Bearer $SUPABASE_MANAGEMENT_API_TOKEN" | \
+    python3 -c "import sys,json; [print(k['api_key']) for k in json.load(sys.stdin) if k['name']=='anon']")
+
+  echo "NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL" >> .env.local
+  echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY" >> .env.local
+
+  supabase link --project-ref "$PROJECT_REF"
+  supabase db push
+  success "Supabase ready: $SUPABASE_URL"
+}
+
+create_vercel_project() {
+  log "Deploying to Vercel..."
+  vercel --yes --name "$PROJECT_NAME"
+  vercel env add NEXT_PUBLIC_SUPABASE_URL production <<< "$SUPABASE_URL"
+  vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production <<< "$SUPABASE_ANON_KEY"
+  vercel env add NEXT_PUBLIC_APP_URL production <<< "https://$PROJECT_NAME.vercel.app"
+  VERCEL_URL=$(vercel --prod --yes 2>&1 | grep "Production:" | awk '{print $2}')
+  success "Live: $VERCEL_URL"
+}
+
+run_agent_pipeline() {
+  log "Running agent pipeline..."
+  npx ts-node orchestrator/index.ts "$IDEA"
+  success "Pipeline complete"
+}
+
+print_summary() {
+  echo ""
+  echo -e "${GREEN}================================${NC}"
+  echo -e "${GREEN}  PROJECT READY: $PROJECT_NAME${NC}"
+  echo -e "${GREEN}================================${NC}"
+  echo "GitHub:   https://github.com/$(gh api user -q .login)/$PROJECT_NAME"
+  echo "Vercel:   $VERCEL_URL"
+  echo "Supabase: $SUPABASE_URL"
+  echo ""
+  mkdir -p scripts/outputs
+  echo "Project: $PROJECT_NAME
+Idea: $IDEA
+GitHub: https://github.com/$(gh api user -q .login)/$PROJECT_NAME
+Vercel: $VERCEL_URL
+Supabase: $SUPABASE_URL
+Created: $(date)" > scripts/outputs/$PROJECT_NAME-summary.txt
+  success "Summary saved to scripts/outputs/$PROJECT_NAME-summary.txt"
+}
+
 check_prereqs
+create_github_repo
+create_supabase_project
+create_vercel_project
+run_agent_pipeline
+print_summary
