@@ -1,310 +1,69 @@
 @import "tailwindcss";
 
-/* ============================
-   DESIGN SYSTEM — SDF / Andrea Mammoli
-   Palette: Nero + Oro + Bianco caldo
-   ============================ */
+@theme {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.145 0 0);
 
-:root {
-  --gold: #C8A951;
-  --gold-light: #F0D060;
-  --gold-dark: #A88B3D;
-  --black-deep: #050507;
-  --black-card: #0c0c0e;
-  --black-soft: #141416;
-  --white-warm: #F2EDE4;
-  --gray-muted: rgba(242, 237, 228, 0.5);
-  --gray-dim: rgba(242, 237, 228, 0.3);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.145 0 0);
 
-  --background: var(--black-deep);
-  --foreground: var(--white-warm);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.145 0 0);
+
+  --color-primary: oklch(0.205 0 0);
+  --color-primary-foreground: oklch(0.985 0 0);
+
+  --color-secondary: oklch(0.97 0 0);
+  --color-secondary-foreground: oklch(0.205 0 0);
+
+  --color-muted: oklch(0.97 0 0);
+  --color-muted-foreground: oklch(0.556 0 0);
+
+  --color-accent: oklch(0.97 0 0);
+  --color-accent-foreground: oklch(0.205 0 0);
+
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-destructive-foreground: oklch(0.985 0 0);
+
+  --color-border: oklch(0.922 0 0);
+  --color-input: oklch(0.922 0 0);
+  --color-ring: oklch(0.708 0 0);
+
+  --radius: 0.625rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --color-gold-dark: var(--gold-dark);
-  --color-black-deep: var(--black-deep);
-  --color-black-card: var(--black-card);
-  --color-black-soft: var(--black-soft);
-  --color-white-warm: var(--white-warm);
-  --color-gray-muted: var(--gray-muted);
-  --color-gray-dim: var(--gray-dim);
-  --font-heading: "Bebas Neue", sans-serif;
-  --font-body: "DM Sans", sans-serif;
-  --font-accent: "Cormorant Garamond", serif;
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(0.145 0 0);
+    --color-foreground: oklch(0.985 0 0);
+    --color-card: oklch(0.205 0 0);
+    --color-card-foreground: oklch(0.985 0 0);
+    --color-popover: oklch(0.205 0 0);
+    --color-popover-foreground: oklch(0.985 0 0);
+    --color-primary: oklch(0.985 0 0);
+    --color-primary-foreground: oklch(0.205 0 0);
+    --color-secondary: oklch(0.269 0 0);
+    --color-secondary-foreground: oklch(0.985 0 0);
+    --color-muted: oklch(0.269 0 0);
+    --color-muted-foreground: oklch(0.708 0 0);
+    --color-accent: oklch(0.269 0 0);
+    --color-accent-foreground: oklch(0.985 0 0);
+    --color-destructive: oklch(0.704 0.191 22.216);
+    --color-destructive-foreground: oklch(0.985 0 0);
+    --color-border: oklch(1 0 0 / 10%);
+    --color-input: oklch(1 0 0 / 15%);
+    --color-ring: oklch(0.556 0 0);
+  }
 }
 
-/* ============================
-   BASE STYLES
-   ============================ */
-
+html,
 body {
-  background: var(--black-deep);
-  color: var(--white-warm);
-  font-family: "DM Sans", sans-serif;
-  overflow-x: hidden;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
-::selection {
-  background: var(--gold);
-  color: var(--black-deep);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--black-deep);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--gold-dark);
-  border-radius: 3px;
-}
-
-/* ============================
-   TYPOGRAPHY
-   ============================ */
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Bebas Neue", sans-serif;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-}
-
-.font-accent {
-  font-family: "Cormorant Garamond", serif;
-}
-
-/* ============================
-   GOLD GRADIENT TEXT
-   ============================ */
-
-.text-gold-gradient {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ============================
-   BUTTONS
-   ============================ */
-
-.btn-gold {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  color: var(--black-deep);
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 1.125rem;
-  letter-spacing: 0.08em;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.btn-gold:hover {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(200, 169, 81, 0.3);
-}
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.875rem 2rem;
-  background: transparent;
-  color: var(--white-warm);
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 1.125rem;
-  letter-spacing: 0.08em;
-  border: 1px solid var(--gray-muted);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.btn-ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-  transform: translateY(-2px);
-}
-
-/* ============================
-   CARDS
-   ============================ */
-
-.card {
-  background: var(--black-card);
-  border: 1px solid rgba(200, 169, 81, 0.1);
-  transition: all 0.4s ease;
-}
-
-.card:hover {
-  border-color: rgba(200, 169, 81, 0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-}
-
-.card-featured {
-  border-top: 3px solid var(--gold);
-}
-
-/* ============================
-   ANIMATIONS
-   ============================ */
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(200, 169, 81, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(200, 169, 81, 0.4); }
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.8s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease forwards;
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-shimmer {
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Stagger delays */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-
-/* ============================
-   SECTION STYLES
-   ============================ */
-
-.section-label {
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.section-title {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  line-height: 1;
-}
-
-/* ============================
-   MARQUEE
-   ============================ */
-
-.marquee-container {
-  overflow: hidden;
-  background: var(--gold);
-  color: var(--black-deep);
-  padding: 0.75rem 0;
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.15em;
-  white-space: nowrap;
-}
-
-.marquee-content {
-  display: inline-flex;
-  gap: 2rem;
-  animation: marquee 30s linear infinite;
-}
-
-/* ============================
-   WHATSAPP BUTTON
-   ============================ */
-
-.whatsapp-float {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #25d366, #128c7e);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-  z-index: 1000;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
-}
-
-/* ============================
-   FORM STYLES (dark theme)
-   ============================ */
-
-.input-dark {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--black-soft);
-  border: 1px solid rgba(200, 169, 81, 0.2);
-  color: var(--white-warm);
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.input-dark:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px rgba(200, 169, 81, 0.15);
-}
-
-.input-dark::placeholder {
-  color: var(--gray-dim);
+* {
+  border-color: var(--color-border);
 }
