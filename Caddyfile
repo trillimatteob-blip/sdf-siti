@@ -1,0 +1,3 @@
+my.salutediferro.com {
+    reverse_proxy sdf-dashboard:3000
+}

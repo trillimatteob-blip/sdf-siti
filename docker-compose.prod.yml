@@ -1,24 +1,47 @@
 version: "3.8"
 
 services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: sdf-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - sdf-network
+    depends_on:
+      - sdf-dashboard
+
   sdf-dashboard:
     image: ghcr.io/trillimatteob-blip/sdf-siti:latest
     container_name: sdf-dashboard
-    ports:
-      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - sdf-network
     volumes:
-      # Persistent volume for SQLite database
       - ./data:/app/data
-      # Mount .env file for secrets (create this manually on the VPS)
       - ./.env:/app/.env:ro
     environment:
       - NODE_ENV=production
       - PORT=3000
       - HOSTNAME=0.0.0.0
-    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health/doctors"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+networks:
+  sdf-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

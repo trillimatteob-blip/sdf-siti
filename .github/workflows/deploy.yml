@@ -78,8 +78,8 @@ jobs:
             # Login to GitHub Container Registry on VPS
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Pull latest image and restart
-            docker compose -f docker-compose.prod.yml pull
+            # Pull latest app image and restart
+            docker compose -f docker-compose.prod.yml pull sdf-dashboard
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
 
             # Cleanup old images
