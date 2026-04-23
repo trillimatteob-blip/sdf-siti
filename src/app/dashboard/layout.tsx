@@ -24,7 +24,7 @@ export default async function DashboardLayout({
     .single();
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen" style={{ background: '#050507' }}>
       <DashboardSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <DashboardTopbar

@@ -16,8 +16,8 @@ const links = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   return (
-    <aside className="hidden w-60 shrink-0 border-r border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 md:block">
-      <div className="flex h-16 items-center px-6 font-semibold tracking-tight">
+    <aside className="hidden w-60 shrink-0 border-r md:block" style={{ borderColor: 'rgba(242,237,228,0.1)', background: '#0c0c0e' }}>
+      <div className="flex h-16 items-center px-6 font-semibold tracking-tight text-[#c8a951]">
         <Link href="/">AM Academy</Link>
       </div>
       <nav className="space-y-1 px-3">
@@ -32,9 +32,10 @@ export function DashboardSidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm",
                 active
-                  ? "bg-neutral-100 font-medium text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100"
-                  : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
+                  ? "font-medium text-[#f2ede4]"
+                  : "text-[#f2ede480] hover:text-[#f2ede4]",
               )}
+              style={active ? { background: '#141416' } : {}}
             >
               <Icon size={16} />
               {label}

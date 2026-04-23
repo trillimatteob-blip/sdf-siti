@@ -3,11 +3,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "SaaS Starter",
-    template: "%s · SaaS Starter",
+    default: "Andrea Mammoli | IFBB Pro Coach",
+    template: "%s · Andrea Mammoli",
   },
   description:
-    "Production-ready SaaS starter with Next.js, Supabase, Stripe, and Resend.",
+    "Coaching online personalizzato e video corsi di posing con Andrea Mammoli, IFBB Pro Bodybuilder e 2x qualificato Mr. Olympia.",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="it">
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );
