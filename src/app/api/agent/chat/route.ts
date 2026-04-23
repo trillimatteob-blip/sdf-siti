@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@/lib/supabase/server";
 import { getHealthData, getReminders } from "@/lib/health-db";
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY }) : null;
 
 export async function POST(request: Request) {
   try {
@@ -50,6 +50,18 @@ Regole:
 - Se non ci sono dati: "Dove sono i numeri? Non posso aiutarti senza dati!"
 - Risposte concise (max 3-4 frasi).
 - Tono: diretto, energico, fraterno.`;
+
+    if (!anthropic) {
+      // Fallback mock quando ANTHROPIC_API_KEY non è configurata
+      const mockResponses = [
+        "LIGHT WEIGHT! I numeri non mentono. Continua a monitorare.",
+        "Ehi! Hai fatto i passi oggi? Non vedo attività!",
+        "Quella glicemia è alta. Controlla l'alimentazione. ZERO SCUSE.",
+        "Ottimo lavoro sul sonno. Ma puoi fare di meglio. SEMPRE.",
+        "Non dimenticare: esame tra 3 giorni. Preparati.",
+      ];
+      return Response.json({ response: mockResponses[Math.floor(Math.random() * mockResponses.length)] });
+    }
 
     const response = await anthropic.messages.create({
       model: "claude-3-5-sonnet-20241022",
