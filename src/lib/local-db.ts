@@ -62,6 +62,20 @@ export function initLocalDb() {
     )
   `);
 
+  localDb.exec(`
+    CREATE TABLE IF NOT EXISTS documents (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      filename TEXT NOT NULL,
+      original_name TEXT NOT NULL,
+      mime_type TEXT NOT NULL,
+      size INTEGER NOT NULL,
+      category TEXT,
+      description TEXT,
+      uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   const insertDoc = localDb.prepare(`
     INSERT OR IGNORE INTO doctors (id, name, specialization, style, passions, price, availability, rating, reviews_count)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)

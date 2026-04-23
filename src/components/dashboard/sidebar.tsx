@@ -13,6 +13,7 @@ import {
   Calendar,
   Stethoscope,
   ClipboardList,
+  FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,7 @@ const links = [
   { href: "/dashboard/agente", label: "Agente", icon: Bot },
   { href: "/dashboard/calendario", label: "Calendario", icon: Calendar },
   { href: "/dashboard/medici", label: "Medici", icon: Stethoscope },
+  { href: "/dashboard/referti", label: "Referti", icon: FileText },
   { href: "/dashboard/academy", label: "Academy", icon: GraduationCap },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
