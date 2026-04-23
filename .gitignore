@@ -44,3 +44,4 @@ next-env.d.ts
 # orchestrator — per-run artifacts (the folder is kept via .gitkeep)
 /orchestrator/outputs/*
 !/orchestrator/outputs/.gitkeep
+.env*.local
