@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 export const metadata = {
   title: "Video Corsi — AM Posing Academy",
@@ -55,7 +56,9 @@ export default function CorsoPage() {
                   </li>
                 ))}
               </ul>
-              <Button className="mt-6 w-full">Acquista ora</Button>
+              <Button asChild className="mt-6 w-full">
+                <Link href="/login?redirect=/dashboard/academy">Acquista ora</Link>
+              </Button>
             </CardContent>
           </Card>
         ))}
