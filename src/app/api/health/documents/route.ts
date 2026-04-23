@@ -1,55 +1,68 @@
 export const runtime = "nodejs";
 
-import { localDb } from "@/lib/local-db";
-import { writeFileSync, mkdirSync, existsSync } from "fs";
-import { join } from "path";
+import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { randomUUID } from "crypto";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { getDocuments, insertDocument } from "@/lib/health-db";
 
-const UPLOAD_DIR = join(process.cwd(), "data", "uploads");
+async function getUserId(): Promise<string | null> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  return user?.id ?? null;
+}
 
 export async function GET() {
-  try {
-    const supabase = await createClient();
-    const { data: userData } = await supabase.auth.getUser();
-    const userId = userData.user?.id;
-    if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const userId = await getUserId();
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const docs = localDb.prepare("SELECT * FROM documents WHERE user_id = ? ORDER BY uploaded_at DESC").all(userId);
-    return Response.json({ data: docs });
+  try {
+    const docs = await getDocuments(userId);
+    return NextResponse.json({ data: docs });
   } catch (e: any) {
-    return Response.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
+  const userId = await getUserId();
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const body = await request.json();
+  const { filename, mimeType, size, base64, category, description } = body;
+
+  if (!filename || !base64) {
+    return NextResponse.json({ error: "Missing filename or data" }, { status: 400 });
+  }
+
   try {
-    const supabase = await createClient();
-    const { data: userData } = await supabase.auth.getUser();
-    const userId = userData.user?.id;
-    if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+    const ext = filename.split(".").pop() || "";
+    const storagePath = `${userId}/${Date.now()}.${ext}`;
+    const buffer = Buffer.from(base64, "base64");
 
-    const body = await request.json();
-    const { filename, mimeType, size, base64, category, description } = body;
+    // Upload to Supabase Storage
+    const { error: uploadError } = await getSupabaseAdmin().storage
+      .from("documents")
+      .upload(storagePath, buffer, {
+        contentType: mimeType || "application/octet-stream",
+        upsert: false,
+      });
 
-    if (!filename || !base64) {
-      return Response.json({ error: "Missing filename or data" }, { status: 400 });
+    if (uploadError) {
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
-    if (!existsSync(UPLOAD_DIR)) mkdirSync(UPLOAD_DIR, { recursive: true });
+    // Save metadata
+    const record = await insertDocument(userId, {
+      filename: storagePath,
+      original_name: filename,
+      mime_type: mimeType || "application/octet-stream",
+      size: size || buffer.length,
+      storage_path: storagePath,
+      category: category || null,
+      description: description || null,
+    });
 
-    const id = randomUUID();
-    const ext = filename.split(".").pop() || "";
-    const storedName = `${id}.${ext}`;
-    const buffer = Buffer.from(base64, "base64");
-    writeFileSync(join(UPLOAD_DIR, storedName), buffer);
-
-    localDb.prepare(`
-      INSERT INTO documents (id, user_id, filename, original_name, mime_type, size, category, description)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(id, userId, storedName, filename, mimeType || "application/octet-stream", size || buffer.length, category || null, description || null);
-
-    return Response.json({ success: true, id });
+    return Response.json({ success: true, id: record.id });
   } catch (e: any) {
     return Response.json({ error: e.message }, { status: 500 });
   }

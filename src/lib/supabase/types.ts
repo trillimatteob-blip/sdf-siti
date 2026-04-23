@@ -1,9 +1,3 @@
-/**
- * Database types generated from the Supabase schema in `supabase/migrations`.
- *
- * In a real project, regenerate with:
- *   npx supabase gen types typescript --project-id <id> > src/lib/supabase/types.ts
- */
 export type Json =
   | string
   | number
@@ -126,6 +120,255 @@ export type Database = {
           current_period_end?: string | null;
           cancel_at_period_end?: boolean;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      health_data: {
+        Row: {
+          id: string;
+          user_id: string;
+          date: string;
+          weight: number | null;
+          height: number | null;
+          body_fat: number | null;
+          muscle_mass: number | null;
+          bmi: number | null;
+          body_water: number | null;
+          waist: number | null;
+          hips: number | null;
+          chest: number | null;
+          arms: number | null;
+          thigh: number | null;
+          calves: number | null;
+          systolic_bp: number | null;
+          diastolic_bp: number | null;
+          resting_hr: number | null;
+          oxygen_saturation: number | null;
+          hrv: number | null;
+          fasting_glucose: number | null;
+          post_meal_glucose: number | null;
+          ketones: number | null;
+          body_temp: number | null;
+          sleep_hours: number | null;
+          sleep_quality: number | null;
+          sleep_start: string | null;
+          sleep_end: string | null;
+          night_awakenings: number | null;
+          steps: number | null;
+          calories_burned: number | null;
+          activity_minutes: number | null;
+          distance_km: number | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          date?: string;
+          weight?: number | null;
+          height?: number | null;
+          body_fat?: number | null;
+          muscle_mass?: number | null;
+          bmi?: number | null;
+          body_water?: number | null;
+          waist?: number | null;
+          hips?: number | null;
+          chest?: number | null;
+          arms?: number | null;
+          thigh?: number | null;
+          calves?: number | null;
+          systolic_bp?: number | null;
+          diastolic_bp?: number | null;
+          resting_hr?: number | null;
+          oxygen_saturation?: number | null;
+          hrv?: number | null;
+          fasting_glucose?: number | null;
+          post_meal_glucose?: number | null;
+          ketones?: number | null;
+          body_temp?: number | null;
+          sleep_hours?: number | null;
+          sleep_quality?: number | null;
+          sleep_start?: string | null;
+          sleep_end?: string | null;
+          night_awakenings?: number | null;
+          steps?: number | null;
+          calories_burned?: number | null;
+          activity_minutes?: number | null;
+          distance_km?: number | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          date?: string;
+          weight?: number | null;
+          height?: number | null;
+          body_fat?: number | null;
+          muscle_mass?: number | null;
+          bmi?: number | null;
+          body_water?: number | null;
+          waist?: number | null;
+          hips?: number | null;
+          chest?: number | null;
+          arms?: number | null;
+          thigh?: number | null;
+          calves?: number | null;
+          systolic_bp?: number | null;
+          diastolic_bp?: number | null;
+          resting_hr?: number | null;
+          oxygen_saturation?: number | null;
+          hrv?: number | null;
+          fasting_glucose?: number | null;
+          post_meal_glucose?: number | null;
+          ketones?: number | null;
+          body_temp?: number | null;
+          sleep_hours?: number | null;
+          sleep_quality?: number | null;
+          sleep_start?: string | null;
+          sleep_end?: string | null;
+          night_awakenings?: number | null;
+          steps?: number | null;
+          calories_burned?: number | null;
+          activity_minutes?: number | null;
+          distance_km?: number | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      reminders: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          description: string | null;
+          due_date: string;
+          type: string;
+          status: string;
+          notify_doctor: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          title: string;
+          description?: string | null;
+          due_date: string;
+          type?: string;
+          status?: string;
+          notify_doctor?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          description?: string | null;
+          due_date?: string;
+          type?: string;
+          status?: string;
+          notify_doctor?: boolean;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      doctors: {
+        Row: {
+          id: string;
+          name: string;
+          specialization: string;
+          style: string;
+          passions: string | null;
+          price: number;
+          availability: string | null;
+          rating: number;
+          reviews_count: number;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          specialization: string;
+          style: string;
+          passions?: string | null;
+          price: number;
+          availability?: string | null;
+          rating?: number;
+          reviews_count?: number;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          specialization?: string;
+          style?: string;
+          passions?: string | null;
+          price?: number;
+          availability?: string | null;
+          rating?: number;
+          reviews_count?: number;
+        };
+        Relationships: [];
+      };
+      documents: {
+        Row: {
+          id: string;
+          user_id: string;
+          filename: string;
+          original_name: string;
+          mime_type: string;
+          size: number;
+          storage_path: string;
+          category: string | null;
+          description: string | null;
+          uploaded_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          filename: string;
+          original_name: string;
+          mime_type: string;
+          size: number;
+          storage_path: string;
+          category?: string | null;
+          description?: string | null;
+          uploaded_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          filename?: string;
+          original_name?: string;
+          mime_type?: string;
+          size?: number;
+          storage_path?: string;
+          category?: string | null;
+          description?: string | null;
+          uploaded_at?: string;
+        };
+        Relationships: [];
+      };
+      access_logs: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          doctor_id: string | null;
+          action: string;
+          resource: string;
+          timestamp: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          doctor_id?: string | null;
+          action: string;
+          resource: string;
+          timestamp?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          doctor_id?: string | null;
+          action?: string;
+          resource?: string;
+          timestamp?: string;
         };
         Relationships: [];
       };

@@ -1,8 +1,8 @@
 export const runtime = "nodejs";
 
 import Anthropic from "@anthropic-ai/sdk";
-import { localDb } from "@/lib/local-db";
 import { createClient } from "@/lib/supabase/server";
+import { getHealthData, getReminders } from "@/lib/health-db";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -16,19 +16,10 @@ export async function POST(request: Request) {
     const { message } = await request.json();
     if (!message) return Response.json({ error: "Missing message" }, { status: 400 });
 
-    // Recupera dati sanitari recenti (ultimi 30 giorni)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const healthData = localDb.prepare(`
-      SELECT * FROM health_data WHERE user_id = ? AND date >= ? ORDER BY date DESC LIMIT 10
-    `).all(userId, thirtyDaysAgo.toISOString().split("T")[0]);
+    // Recupera dati sanitari recenti
+    const healthData = await getHealthData(userId, 10);
+    const reminders = await getReminders(userId);
 
-    // Recupera reminder imminenti
-    const reminders = localDb.prepare(`
-      SELECT * FROM reminders WHERE user_id = ? AND due_date >= date('now') AND status = 'pending' ORDER BY due_date LIMIT 5
-    `).all(userId);
-
-    // Formatta dati per il prompt
     const healthSummary = healthData.length > 0
       ? healthData.map((h: any) =>
           `- ${h.date}: peso ${h.weight}kg, glicemia ${h.fasting_glucose}mg/dL, FC ${h.resting_hr}bpm, sonno ${h.sleep_hours}h, passi ${h.steps}`
@@ -36,7 +27,13 @@ export async function POST(request: Request) {
       : "Nessun dato sanitario recente.";
 
     const reminderSummary = reminders.length > 0
-      ? reminders.map((r: any) => `- ${r.title} (${r.type}) il ${r.due_date}`).join("\n")
+      ? reminders.filter((r: any) => {
+          const days = Math.ceil((new Date(r.due_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+          return days >= 0 && days <= 14;
+        }).map((r: any) => {
+          const days = Math.ceil((new Date(r.due_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+          return `- ${r.title} (${r.type}) — ${days <= 0 ? "Oggi" : days === 1 ? "Domani" : `Tra ${days} giorni`}`;
+        }).join("\n")
       : "Nessun reminder imminente.";
 
     const systemPrompt = `Sei l'Agente di Ferro, un coach virtuale muscoloso, intimidatorio ma motivazionale. Ispirato a Ronnie Coleman. Parli in italiano. Usa frasi corte, dirette, maiuscole per enfasi. NON sei un medico, non fai diagnosi. Dai consigli su stile di vita, allenamento, motivazione basandoti sui dati dell'utente.

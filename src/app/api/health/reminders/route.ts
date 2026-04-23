@@ -1,9 +1,8 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { localDb } from "@/lib/local-db";
 import { createClient } from "@/lib/supabase/server";
-import { randomUUID } from "crypto";
+import { getReminders, insertReminder } from "@/lib/health-db";
 
 async function getUserId(): Promise<string | null> {
   const supabase = await createClient();
@@ -14,8 +13,12 @@ async function getUserId(): Promise<string | null> {
 export async function GET() {
   const userId = await getUserId();
   if (!userId) return NextResponse.json({ error: "Non autorizzato" }, { status: 401 });
-  const rows = localDb.prepare("SELECT * FROM reminders WHERE user_id = ? ORDER BY due_date ASC").all(userId);
-  return NextResponse.json({ data: rows });
+  try {
+    const data = await getReminders(userId);
+    return NextResponse.json({ data });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -23,9 +26,17 @@ export async function POST(request: Request) {
   if (!userId) return NextResponse.json({ error: "Non autorizzato" }, { status: 401 });
 
   const body = await request.json();
-  const id = randomUUID();
-  localDb.prepare(`INSERT INTO reminders (id, user_id, title, description, due_date, type, status, notify_doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
-    .run(id, userId, body.title, body.description ?? null, body.due_date, body.type, "pending", body.notify_doctor ? 1 : 0);
-
-  return NextResponse.json({ success: true, id });
+  try {
+    const record = await insertReminder(userId, {
+      title: body.title,
+      description: body.description ?? null,
+      due_date: body.due_date,
+      type: body.type ?? "custom",
+      status: "pending",
+      notify_doctor: body.notify_doctor ?? false,
+    });
+    return NextResponse.json({ success: true, id: record.id });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }

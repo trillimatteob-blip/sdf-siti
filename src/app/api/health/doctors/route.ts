@@ -1,9 +1,13 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { localDb } from "@/lib/local-db";
+import { getDoctors } from "@/lib/health-db";
 
 export async function GET() {
-  const rows = localDb.prepare("SELECT * FROM doctors ORDER BY rating DESC").all();
-  return NextResponse.json({ data: rows });
+  try {
+    const data = await getDoctors();
+    return NextResponse.json({ data });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }
