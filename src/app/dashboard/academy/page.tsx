@@ -54,9 +54,7 @@ export default async function AcademyPage() {
                 {course.totalLessons} lezioni
               </div>
               <Link href={`/dashboard/academy/${course.slug}`} className={cn(buttonVariants(), "w-full")}>
-                <Link href={`/dashboard/academy/${course.slug}`}>
-                  {course.progress > 0 ? "Continua" : "Inizia"}
-                </Link>
+                {course.progress > 0 ? "Continua" : "Inizia"}
               </Link>
             </CardContent>
           </Card>

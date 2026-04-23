@@ -15,6 +15,8 @@ const badgeVariants = cva(
         outline: "text-[var(--color-foreground)]",
         success:
           "border-transparent bg-emerald-500 text-white",
+        destructive:
+          "border-transparent bg-red-500 text-white",
       },
     },
     defaultVariants: {

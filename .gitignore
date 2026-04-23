@@ -45,3 +45,9 @@ next-env.d.ts
 /orchestrator/outputs/*
 !/orchestrator/outputs/.gitkeep
 .env*.local
+
+# local sqlite database
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
