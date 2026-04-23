@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function AcademyPage() {
@@ -52,11 +53,11 @@ export default async function AcademyPage() {
               <div className="text-xs text-neutral-400">
                 {course.totalLessons} lezioni
               </div>
-              <Button asChild className="w-full">
+              <Link href={`/dashboard/academy/${course.slug}`} className={cn(buttonVariants(), "w-full")}>
                 <Link href={`/dashboard/academy/${course.slug}`}>
                   {course.progress > 0 ? "Continua" : "Inizia"}
                 </Link>
-              </Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

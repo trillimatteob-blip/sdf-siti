@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const courses: Record<string, { title: string; lessons: { id: string; title: string; duration: string }[] }> = {
@@ -98,9 +99,9 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         ))}
       </div>
 
-      <Button asChild variant="outline">
+      <Link href="/dashboard/academy" className={cn(buttonVariants({ variant: "outline" }))}>
         <Link href="/dashboard/academy">Torna all&apos;Academy</Link>
-      </Button>
+      </Link>
     </div>
   );
 }
