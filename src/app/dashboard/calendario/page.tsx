@@ -82,7 +82,7 @@ export default function CalendarioPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
             <Inbox className="h-10 w-10 text-[var(--color-muted-foreground)] mb-3" />
-            <p className="text-sm text-[var(--color-muted-foreground)]">Nessun reminder. Clicca "Nuovo reminder" per aggiungerne uno.</p>
+            <p className="text-sm text-[var(--color-muted-foreground)]">Nessun reminder. Clicca &quot;Nuovo reminder&quot; per aggiungerne uno.</p>
           </CardContent>
         </Card>
       ) : (

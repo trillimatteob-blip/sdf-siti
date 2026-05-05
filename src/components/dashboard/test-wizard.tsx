@@ -234,7 +234,7 @@ export function TestWizard() {
                 <li>Inizia a inserire i dati giornalieri nella sezione <strong>Salute</strong></li>
                 <li>Prenota il tuo primo pannello di analisi</li>
                 <li>Consulta la sezione <strong>Medici</strong> per trovare lo specialista adatto</li>
-                <li>L'Agente di Ferro ti aiuterà a monitorare i progressi</li>
+                <li>L&apos;Agente di Ferro ti aiuterà a monitorare i progressi</li>
               </ul>
             </div>
             <Button className="w-full" onClick={() => window.location.href = "/dashboard/salute"}>
